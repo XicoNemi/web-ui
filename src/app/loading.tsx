@@ -1,7 +1,5 @@
-const Loading = () =>{
-    return(
-        <div>Loading</div>
-    )
-}
+import React from 'react';
 
-export default Loading;
+export default function Loading(): React.JSX.Element {
+  return <div>Loading</div>;
+}
