@@ -18,21 +18,19 @@ export interface SignInResponse {
 }
 
 export interface User {
-  _id: string;
-  name: string;
+  id:       number;
+  name:     string;
   lastname: string;
-  dob: Date;
-  phone: string;
-  email: string;
-  username: string;
-  role: UserRoles;
-  enabled: boolean;
-  imageUrl: string;
-  createdAt: Date;
-  updatedAt: Date;
-  fullName: string;
-  id: string;
+  email:    string;
+  password: string;
+  tel:      string;
+  birthday: Date;
+  type:     string;
+  travelId: null;
+  active:   boolean;
+  token:    null;
 }
+
 
 export interface CreateUser {
   name: string;

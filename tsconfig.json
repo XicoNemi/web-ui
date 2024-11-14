@@ -23,6 +23,8 @@
       "@/*": ["./src/*"],
       "@app/*": ["./src/app/*"],
       "@components/*": ["./src/components/*"],
+      "@guards/*": ["./src/guards/*"],
+      "@contexts/*": ["./src/contexts/*"],
       "@icons/*": ["./src/icons/*"],
       "@utils/*": ["./src/utils/*"],
       "@lib/*": ["./src/lib/*"],

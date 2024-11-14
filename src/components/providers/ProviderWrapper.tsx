@@ -10,6 +10,7 @@ import { ThemeProvider } from '@mui/material/styles';
 // Project Imports
 import { baselightTheme } from '@/styles/theme/DefaultColors';
 
+import { AuthProvider } from '@/contexts/auth/AuthContext';
 import ReactQueryProvider from '@components/providers/ReactQueryProvider';
 
 interface ProviderWrapperProps {
@@ -18,10 +19,12 @@ interface ProviderWrapperProps {
 
 export default function ProviderWrapper({ children }: ProviderWrapperProps): React.JSX.Element {
   return (
-    <ThemeProvider theme={baselightTheme}>
-      {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-      <CssBaseline />
-      <ReactQueryProvider>{children}</ReactQueryProvider>
-    </ThemeProvider>
+    <ReactQueryProvider>
+      <ThemeProvider theme={baselightTheme}>
+        {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+        <CssBaseline />
+        <AuthProvider>{children}</AuthProvider>
+      </ThemeProvider>
+    </ReactQueryProvider>
   );
 }

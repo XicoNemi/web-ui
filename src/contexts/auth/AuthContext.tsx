@@ -3,20 +3,19 @@
 import React, { createContext, useEffect, useState } from 'react';
 // Types
 import type { ReactNode } from 'react';
-
-import { useQueryClient } from '@tanstack/react-query';
 import type { AxiosResponse } from 'axios';
+import type { AuthContextValue } from '@/contexts/auth/types';
+import type { SignInResponse, User } from '@/types/user';
+
 // Third Party Imports
 import { jwtDecode } from 'jwt-decode';
 
 // Project Imports
 import axios from '@/lib/axios';
-import { logger } from '@/lib/default-logger';
+import Loader from '@/components/shared/Loader';
 
-import Loader from '@/components/loader';
-import type { AuthContextValue } from '@/contexts/auth/types';
-
-import type { SignInResponse, User } from '@/types/user';
+// Third Party Imports
+import { useQueryClient } from '@tanstack/react-query';
 
 export interface SignUpParams {
   name: string;
@@ -53,21 +52,20 @@ const setSession = async (serviceToken: string | null): Promise<void> => {
     axios.defaults.headers.common.Authorization = `Bearer ${serviceToken}`;
   } else {
     try {
-      const refreshtoken = window.localStorage.getItem('refreshToken');
       await axios.post(
         '/auth/signout',
         {},
         {
           headers: {
-            Authorization: `Bearer ${serviceToken}`,
-            refreshtoken,
+            'auth-token': serviceToken,
           },
         }
       );
       localStorage.clear();
       delete axios.defaults.headers.common.Authorization;
     } catch (error) {
-      logger.error(error);
+      // eslint-disable-next-line no-console -- error handling
+      console.error(error);
     }
   }
 };
@@ -102,12 +100,12 @@ function AuthProvider({ children }: { children: ReactNode }): React.JSX.Element 
       SignInResponse,
       AxiosResponse<SignInResponse>,
       SignInWithPasswordParams
-    >('/auth/signin', params);
+    >('/api/auth/sign-in', params);
 
-    const { token, refreshToken, user: userData } = response.data;
-    localStorage.setItem('refreshToken', refreshToken);
+    const token = response.headers['auth-token'];
+    const userData = response.data.user;
 
-    void setSession(token);
+    void setSession(token as string);
 
     if (userData) {
       localStorage.setItem('userData', JSON.stringify(userData));

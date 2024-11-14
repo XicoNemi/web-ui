@@ -7,6 +7,8 @@ import styled from '@mui/material/styles/styled';
 import Container from '@mui/material/Container';
 
 // Project Imports
+import { AuthGuard } from '@/guards/AuthGuard';
+
 import Header from '@layout/header/Header';
 import Sidebar from '@layout/sidebar/Sidebar';
 
@@ -39,41 +41,43 @@ export default function RootLayout({ children }: RootLayoutProps): React.JSX.Ele
   };
 
   return (
-    <MainWrapper className="mainwrapper">
-      {/* ------------------------------------------- */}
-      {/* Sidebar */}
-      {/* ------------------------------------------- */}
-      <Sidebar
-        isSidebarOpen={isSidebarOpen}
-        isMobileSidebarOpen={isMobileSidebarOpen}
-        onSidebarClose={toggleMobileSideBar}
-      />
-      {/* ------------------------------------------- */}
-      {/* Main Wrapper */}
-      {/* ------------------------------------------- */}
-      <PageWrapper className="page-wrapper">
+    <AuthGuard>
+      <MainWrapper className="mainwrapper">
         {/* ------------------------------------------- */}
-        {/* Header */}
+        {/* Sidebar */}
         {/* ------------------------------------------- */}
-        <Header toggleMobileSidebar={toggleMobileSideBar} />
+        <Sidebar
+          isSidebarOpen={isSidebarOpen}
+          isMobileSidebarOpen={isMobileSidebarOpen}
+          onSidebarClose={toggleMobileSideBar}
+        />
         {/* ------------------------------------------- */}
-        {/* PageContent */}
+        {/* Main Wrapper */}
         {/* ------------------------------------------- */}
-        <Container
-          sx={{
-            paddingTop: '20px',
-            maxWidth: '1200px',
-          }}
-        >
+        <PageWrapper className="page-wrapper">
           {/* ------------------------------------------- */}
-          {/* Page Route */}
+          {/* Header */}
           {/* ------------------------------------------- */}
-          <Box sx={{ minHeight: 'calc(100vh - 170px)' }}>{children}</Box>
+          <Header toggleMobileSidebar={toggleMobileSideBar} />
           {/* ------------------------------------------- */}
-          {/* End Page */}
+          {/* PageContent */}
           {/* ------------------------------------------- */}
-        </Container>
-      </PageWrapper>
-    </MainWrapper>
+          <Container
+            sx={{
+              paddingTop: '20px',
+              maxWidth: '1200px',
+            }}
+          >
+            {/* ------------------------------------------- */}
+            {/* Page Route */}
+            {/* ------------------------------------------- */}
+            <Box sx={{ minHeight: 'calc(100vh - 170px)' }}>{children}</Box>
+            {/* ------------------------------------------- */}
+            {/* End Page */}
+            {/* ------------------------------------------- */}
+          </Container>
+        </PageWrapper>
+      </MainWrapper>
+    </AuthGuard>
   );
 }

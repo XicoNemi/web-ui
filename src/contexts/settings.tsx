@@ -3,7 +3,7 @@
 import * as React from 'react';
 
 import type { Settings } from '@/types/settings';
-import { applyDefaultSettings } from '@/lib/settings/apply-default-settings';
+import { applyDefaultSettings } from '@/lib/settings/applyDefaultSettings';
 
 export interface SettingsContextValue {
   settings: Settings;
