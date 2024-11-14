@@ -55,7 +55,7 @@ const setSession = async (serviceToken: string | null): Promise<void> => {
   } else {
     try {
       // await axios.post(
-      //   '/auth/signout',
+      //   'auth/signout',
       //   {},
       //   {
       //     headers: {
@@ -102,7 +102,7 @@ function AuthProvider({ children }: { children: ReactNode }): React.JSX.Element 
       SignInResponse,
       AxiosResponse<SignInResponse>,
       SignInWithPasswordParams
-    >('/auth/sign-in', params);
+    >('auth/sign-in', params);
 
     const token = response.headers['auth-token'];
     const userData = response.data;
