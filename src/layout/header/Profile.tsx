@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 // MUI Imports
 import Box from '@mui/material/Box';
@@ -11,10 +11,15 @@ import IconButton from '@mui/material/IconButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 
+// Project Imports
+import { useAuth } from '@hooks/useAuth';
+
+// Assets
 import { IconListCheck, IconMail, IconUser } from '@tabler/icons-react';
-import { paths } from '@/paths';
 
 export default function Profile(): React.JSX.Element {
+  const { logout } = useAuth();
+  const router = useRouter();
   const [anchorEl2, setAnchorEl2] = useState<null | HTMLElement>(null);
   const handleClick2 = (event: React.MouseEvent<HTMLButtonElement>): void => {
     setAnchorEl2(event.currentTarget);
@@ -83,8 +88,16 @@ export default function Profile(): React.JSX.Element {
           <ListItemText>My Tasks</ListItemText>
         </MenuItem>
         <Box mt={1} py={1} px={2}>
-          <Button href={paths.auth.login} variant="outlined" color="primary" component={Link} fullWidth>
-            Logout
+          <Button
+            variant="outlined"
+            onClick={async () => {
+              await logout();
+              router.refresh();
+            }}
+            color="primary"
+            fullWidth
+          >
+            Cerrar Sesión
           </Button>
         </Box>
       </Menu>

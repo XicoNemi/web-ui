@@ -11,26 +11,21 @@ export interface SignUp {
   password: string;
 }
 
-export interface SignInResponse {
-  token: string;
-  refreshToken: string;
-  user: User;
-}
+export interface SignInResponse extends User {}
 
 export interface User {
-  id:       number;
-  name:     string;
+  id: number;
+  name: string;
   lastname: string;
-  email:    string;
+  email: string;
   password: string;
-  tel:      string;
+  tel: string;
   birthday: Date;
-  type:     string;
+  type: string;
   travelId: null;
-  active:   boolean;
-  token:    null;
+  active: boolean;
+  token: null;
 }
-
 
 export interface CreateUser {
   name: string;
@@ -49,14 +44,13 @@ export interface UpdatePassword {
 }
 
 export interface Session {
-  _id:          string;
-  user:         string;
-  device:       string;
-  location:     string;
-  enabled:      boolean;
+  _id: string;
+  user: string;
+  device: string;
+  location: string;
+  enabled: boolean;
   refreshToken: string;
-  loginTime:    Date;
-  createdAt:    Date;
-  updatedAt:    Date;
+  loginTime: Date;
+  createdAt: Date;
+  updatedAt: Date;
 }
-

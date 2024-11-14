@@ -14,6 +14,8 @@ import { jwtDecode } from 'jwt-decode';
 import axios from '@/lib/axios';
 import Loader from '@/components/shared/Loader';
 
+import { toast } from '@components/core/toaster';
+
 // Third Party Imports
 import { useQueryClient } from '@tanstack/react-query';
 
@@ -29,7 +31,7 @@ export interface SignUpParams {
 }
 
 export interface SignInWithPasswordParams {
-  username: string;
+  email: string;
   password: string;
 }
 
@@ -49,20 +51,20 @@ export const verifyToken = (serviceToken: string): boolean => {
 const setSession = async (serviceToken: string | null): Promise<void> => {
   if (serviceToken) {
     localStorage.setItem('serviceToken', serviceToken);
-    axios.defaults.headers.common.Authorization = `Bearer ${serviceToken}`;
+    axios.defaults.headers.common['auth-token'] = serviceToken;
   } else {
     try {
-      await axios.post(
-        '/auth/signout',
-        {},
-        {
-          headers: {
-            'auth-token': serviceToken,
-          },
-        }
-      );
+      // await axios.post(
+      //   '/auth/signout',
+      //   {},
+      //   {
+      //     headers: {
+      //       'auth-token': serviceToken,
+      //     },
+      //   }
+      // );
       localStorage.clear();
-      delete axios.defaults.headers.common.Authorization;
+      delete axios.defaults.headers.common['auth-token'];
     } catch (error) {
       // eslint-disable-next-line no-console -- error handling
       console.error(error);
@@ -95,15 +97,15 @@ function AuthProvider({ children }: { children: ReactNode }): React.JSX.Element 
     void init();
   }, [user]);
 
-  const login = async (params: { username: string; password: string }): Promise<void> => {
+  const login = async (params: { email: string; password: string }): Promise<void> => {
     const response: AxiosResponse<SignInResponse> = await axios.post<
       SignInResponse,
       AxiosResponse<SignInResponse>,
       SignInWithPasswordParams
-    >('/api/auth/sign-in', params);
+    >('/auth/sign-in', params);
 
     const token = response.headers['auth-token'];
-    const userData = response.data.user;
+    const userData = response.data;
 
     void setSession(token as string);
 
@@ -119,6 +121,7 @@ function AuthProvider({ children }: { children: ReactNode }): React.JSX.Element 
     setIsLoggedIn(false);
     queryClient.clear();
     setUser(null);
+    toast.success('Sesión cerrada correctamente');
   };
 
   if (!isInitialized) {
