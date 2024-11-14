@@ -12,6 +12,8 @@ import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 
 // Project Imports
+import { paths } from '@/paths';
+
 import Profile from '@layout/header/Profile';
 
 // Assets
@@ -69,7 +71,7 @@ export default function Header({ toggleMobileSidebar }: ItemType): React.JSX.Ele
         </IconButton>
         <Box flexGrow={1} />
         <Stack spacing={1} direction="row" alignItems="center">
-          <Button variant="contained" component={Link} href="/authentication/login" disableElevation color="primary">
+          <Button variant="contained" component={Link} href={paths.auth.login} disableElevation color="primary">
             Login
           </Button>
           <Profile />

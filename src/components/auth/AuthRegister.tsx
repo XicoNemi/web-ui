@@ -8,6 +8,8 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
 // Project Imports
+import { paths } from '@/paths';
+
 import CustomTextField from '@components/forms/theme-elements/CustomTextField';
 
 interface RegisterProps {
@@ -50,7 +52,7 @@ export default function AuthRegister({ title, subtitle, subtext }: RegisterProps
           size="large"
           fullWidth
           component={Link}
-          href="/authentication/login"
+          href={paths.auth.login}
         >
           Sign Up
         </Button>

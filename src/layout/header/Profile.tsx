@@ -12,6 +12,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 
 import { IconListCheck, IconMail, IconUser } from '@tabler/icons-react';
+import { paths } from '@/paths';
 
 export default function Profile(): React.JSX.Element {
   const [anchorEl2, setAnchorEl2] = useState<null | HTMLElement>(null);
@@ -82,7 +83,7 @@ export default function Profile(): React.JSX.Element {
           <ListItemText>My Tasks</ListItemText>
         </MenuItem>
         <Box mt={1} py={1} px={2}>
-          <Button href="/authentication/login" variant="outlined" color="primary" component={Link} fullWidth>
+          <Button href={paths.auth.login} variant="outlined" color="primary" component={Link} fullWidth>
             Logout
           </Button>
         </Box>

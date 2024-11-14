@@ -2,11 +2,13 @@
 
 import React from 'react';
 
+// MUI Imports
+import { ThemeProvider } from '@mui/material/styles';
+
 // Project Imports
 import CssBaseline from '@mui/material/CssBaseline';
 
-import { ThemeProvider } from '@mui/material/styles';
-import { baselightTheme } from '@/utils/theme/DefaultColors';
+import { baselightTheme } from '@/styles/theme/DefaultColors';
 
 interface ProviderWrapperProps {
   children: React.ReactNode;

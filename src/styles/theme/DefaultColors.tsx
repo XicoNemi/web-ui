@@ -14,14 +14,14 @@ const baselightTheme = createTheme({
   direction: 'ltr',
   palette: {
     primary: {
-      main: '#5D87FF',
-      light: '#ECF2FF',
-      dark: '#4570EA',
+      main: '#E6077E',
+      light: '#F09BC0',
+      dark: '#E6077E',
     },
     secondary: {
-      main: '#49BEFF',
-      light: '#E8F7FF',
-      dark: '#23afdb',
+      main: '#8146A0',
+      light: '#AB85B5',
+      dark: '#8146A0',
     },
     success: {
       main: '#13DEB9',

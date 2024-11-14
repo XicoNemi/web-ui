@@ -1,5 +1,4 @@
 'use client';
-
 import React from 'react';
 import Link from 'next/link';
 
@@ -11,13 +10,15 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
 // Project Imports
+import { paths } from '@/paths';
+
 import Logo from '@layout/shared/logo/Logo';
-import AuthRegister from '@components/auth/AuthRegister';
+import AuthLogin from '@components/auth/AuthLogin';
 import PageContainer from '@components/container/PageContainer';
 
-export default function Register2(): React.JSX.Element {
+export default function Login2(): React.JSX.Element {
   return (
-    <PageContainer title="Register" description="this is Register page">
+    <PageContainer title="Login" description="this is Login page">
       <Box
         sx={{
           position: 'relative',
@@ -39,27 +40,27 @@ export default function Register2(): React.JSX.Element {
               <Box display="flex" alignItems="center" justifyContent="center">
                 <Logo />
               </Box>
-              <AuthRegister
+              <AuthLogin
                 subtext={
                   <Typography variant="subtitle1" textAlign="center" color="textSecondary" mb={1}>
                     Your Social Campaigns
                   </Typography>
                 }
                 subtitle={
-                  <Stack direction="row" justifyContent="center" spacing={1} mt={3}>
-                    <Typography color="textSecondary" variant="h6" fontWeight="400">
-                      Already have an Account?
+                  <Stack direction="row" spacing={1} justifyContent="center" mt={3}>
+                    <Typography color="textSecondary" variant="h6" fontWeight="500">
+                      New to Modernize?
                     </Typography>
                     <Typography
                       component={Link}
-                      href="/authentication/login"
+                      href={paths.auth.register}
                       fontWeight="500"
                       sx={{
                         textDecoration: 'none',
                         color: 'primary.main',
                       }}
                     >
-                      Sign In
+                      Create an account
                     </Typography>
                   </Stack>
                 }

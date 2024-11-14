@@ -4,15 +4,14 @@ import React from 'react';
 import { type Theme } from '@mui/material/styles';
 import { useMediaQuery } from '@mui/material';
 
-
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 
 // Project Imports
 import SidebarItems from '@layout/sidebar/SidebarItems';
 
-import { Upgrade } from '@layout/sidebar/Upgrade';
-import { Sidebar, Logo } from 'react-mui-sidebar';
+import { Sidebar } from 'react-mui-sidebar';
+import MainLogo from '@layout/shared/logo/Logo';
 
 interface ItemType {
   isMobileSidebarOpen: boolean;
@@ -77,13 +76,15 @@ export default function MSidebar({ isMobileSidebarOpen, onSidebarClose, isSideba
               {/* ------------------------------------------- */}
               {/* Logo */}
               {/* ------------------------------------------- */}
-              <Logo img="/images/logos/dark-logo.svg" />
+              <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', p: 1 }}>
+                <MainLogo />
+              </Box>
+
               <Box>
                 {/* ------------------------------------------- */}
                 {/* Sidebar Items */}
                 {/* ------------------------------------------- */}
                 <SidebarItems />
-                <Upgrade />
               </Box>
             </Sidebar>
           </Box>
@@ -122,12 +123,14 @@ export default function MSidebar({ isMobileSidebarOpen, onSidebarClose, isSideba
           {/* ------------------------------------------- */}
           {/* Logo */}
           {/* ------------------------------------------- */}
-          <Logo img="/images/logos/dark-logo.svg" />
+
+          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', p: 1 }}>
+            <MainLogo />
+          </Box>
           {/* ------------------------------------------- */}
           {/* Sidebar Items */}
           {/* ------------------------------------------- */}
           <SidebarItems />
-          <Upgrade />
         </Sidebar>
       </Box>
       {/* ------------------------------------------- */}
