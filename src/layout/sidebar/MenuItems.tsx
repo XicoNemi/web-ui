@@ -7,6 +7,12 @@ import {
   IconMoodHappy,
   IconTypography,
   IconUserPlus,
+  IconRoute,
+  IconUsersGroup,
+  IconListCheck,
+  IconCalendarEvent,
+  IconHome,
+  IconToolsKitchen2
 } from '@tabler/icons-react';
 
 import { v4 as uniqueId } from 'uuid';
@@ -25,7 +31,47 @@ const Menuitems = [
   },
   {
     navlabel: true,
-    subheader: 'Utilities',
+    subheader: 'Administrar',
+  },
+  {
+    id: uniqueId(),
+    title: 'Usuarios',
+    icon: IconUsersGroup,
+    href: '/in-progress',
+  },
+  {
+    id: uniqueId(),
+    title: 'Rutas',
+    icon: IconRoute,
+    href: '/in-progress',
+  },
+  {
+    id: uniqueId(),
+    title: 'Eventos',
+    icon: IconCalendarEvent,
+    href: '/in-progress',
+  },
+  {
+    id: uniqueId(),
+    title: 'Comida',
+    icon: IconToolsKitchen2,
+    href: '/in-progress',
+  },
+  {
+    id: uniqueId(),
+    title: 'Hospedajes',
+    icon: IconHome,
+    href: '/in-progress',
+  },
+  {
+    id: uniqueId(),
+    title: 'Itinerarios',
+    icon: IconListCheck,
+    href: '/in-progress',
+  },
+  {
+    navlabel: true,
+    subheader: 'Template',
   },
   {
     id: uniqueId(),
