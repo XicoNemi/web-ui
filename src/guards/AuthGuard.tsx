@@ -7,7 +7,6 @@ import { useRouter } from 'next/navigation';
 import { paths } from '@/paths';
 import { verifyToken } from '@/contexts/auth/AuthContext';
 
-
 import Loader from '@/components/shared/Loader';
 
 export interface AuthGuardProps {

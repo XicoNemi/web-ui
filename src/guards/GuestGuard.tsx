@@ -4,11 +4,12 @@ import * as React from 'react';
 import { useRouter } from 'next/navigation';
 
 // Project Imports
+import { toast } from '@components/core/toaster';
 import { paths } from '@/paths';
-import { useAuth } from '@/hooks/useAuth';
-import { verifyToken } from '@/contexts/auth/AuthContext';
+import { useAuth } from '@hooks/useAuth';
+import { verifyToken } from '@contexts/auth/AuthContext';
 
-import Loader from '@/components/shared/Loader';
+import Loader from '@components/shared/Loader';
 
 export interface GuestGuardProps {
   children: React.ReactNode;
@@ -33,6 +34,7 @@ export function GuestGuard({ children }: GuestGuardProps): React.JSX.Element | n
   React.useEffect(() => {
     checkPermissions().catch(() => {
       // noop
+      toast.error('Ya has iniciado sesión');
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps -- Expected
   }, [user]);

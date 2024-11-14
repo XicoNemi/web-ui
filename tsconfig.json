@@ -24,6 +24,7 @@
       "@app/*": ["./src/app/*"],
       "@components/*": ["./src/components/*"],
       "@guards/*": ["./src/guards/*"],
+      "@hooks/*": ["./src/hooks/*"],
       "@contexts/*": ["./src/contexts/*"],
       "@icons/*": ["./src/icons/*"],
       "@utils/*": ["./src/utils/*"],
