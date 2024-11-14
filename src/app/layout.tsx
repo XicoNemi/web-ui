@@ -15,7 +15,7 @@ interface RootLayoutProps {
 
 export default function RootLayout({ children }: RootLayoutProps): React.JSX.Element {
   return (
-    <html lang="en">
+    <html lang="es">
       <body>
         <ProviderWrapper>{children}</ProviderWrapper>
       </body>

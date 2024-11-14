@@ -25,6 +25,9 @@
       "@components/*": ["./src/components/*"],
       "@icons/*": ["./src/icons/*"],
       "@utils/*": ["./src/utils/*"],
+      "@lib/*": ["./src/lib/*"],
+      "@styles/*": ["./src/styles/*"],
+      "@types/*": ["./src/types/*"],
       "@layout/*": ["./src/layout/*"]
     }
   },
