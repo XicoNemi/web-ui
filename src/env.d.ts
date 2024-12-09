@@ -6,6 +6,9 @@ export interface Env {
 
   // API
   NEXT_PUBLIC_API_URL: string;
+
+  // Google
+  NEXT_PUBLIC_GOOGLE_CLIENT: string;
 }
 
 declare global {

@@ -1,24 +1,29 @@
 import React, { useCallback } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 // MUI Imports
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
+import Divider from '@mui/material/Divider';
 import Checkbox from '@mui/material/Checkbox';
 import FormGroup from '@mui/material/FormGroup';
 import Typography from '@mui/material/Typography';
 import FormControlLabel from '@mui/material/FormControlLabel';
 
 // Project Imports
+import { useAuth } from '@hooks/useAuth';
+import { toast } from '@components/core/toaster';
+
+import GoogleIcon from '@components/auth/GoogleIcon';
 import CustomTextField from '@components/forms/theme-elements/CustomTextField';
 
 // Third Party Imports
 import * as Yup from 'yup';
+
 import { useFormik } from 'formik';
-import { useAuth } from '@hooks/useAuth';
-import { useRouter } from 'next/navigation';
-import { toast } from '@components/core/toaster';
+import { useGoogleLogin, type TokenResponse } from '@react-oauth/google';
 
 interface LoginProps {
   title?: string;
@@ -33,13 +38,10 @@ interface FormValues {
 
 export default function AuthLogin({ title, subtitle, subtext }: LoginProps): React.JSX.Element {
   const router = useRouter();
-  const { login } = useAuth();
+  const { login, googleLogin } = useAuth();
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access -- formik typings are incorrect
   const validationSchema = Yup.object({
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access -- formik typings are incorrect
     email: Yup.string().email('Ingresa un correo válido').required('Ingresa tu correo'),
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access -- formik typings are incorrect
     password: Yup.string().required('Ingresa tu contraseña'),
   });
 
@@ -72,6 +74,25 @@ export default function AuthLogin({ title, subtitle, subtext }: LoginProps): Rea
 
   const hasErrorEmail = Boolean(errors.email && touched.email);
   const hasErrorPassword = Boolean(errors.password && touched.password);
+
+  const googleAuth = useGoogleLogin({
+    onSuccess: async (response: Omit<TokenResponse, 'error' | 'error_description' | 'error_uri'>) => {
+      console.log(response);
+      try {
+        if (response.access_token) {
+          await googleLogin(response.access_token);
+          toast.success('Sesión iniciada correctamente con Google.');
+        } else {
+          toast.error('Error con la autenticación de Google.');
+        }
+      } catch (error) {
+        toast.error('Error con la autenticación de Google.');
+      }
+    },
+    onError: () => {
+      toast.error('Error con la autenticación de Google.');
+    },
+  });
 
   return (
     <>
@@ -136,9 +157,22 @@ export default function AuthLogin({ title, subtitle, subtext }: LoginProps): Rea
           </Typography>
         </Stack>
       </Box>
-      <Box>
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', gap: 2 }}>
         <Button color="primary" form="loginForm" variant="contained" size="large" fullWidth type="submit">
           Iniciar Sesión
+        </Button>
+        <Divider flexItem />
+        <Button
+          fullWidth
+          size="large"
+          variant="contained"
+          sx={{ bgcolor: 'black' }}
+          startIcon={<GoogleIcon />}
+          onClick={() => {
+            googleAuth();
+          }}
+        >
+          Iniciar sesión con Google
         </Button>
       </Box>
       {subtitle}

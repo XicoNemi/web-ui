@@ -6,4 +6,5 @@ export interface AuthContextValue {
   user: User | null;
   login: (params: { email: string; password: string }) => Promise<void>;
   logout: () => Promise<void>;
+  googleLogin: (tokenId: string) => Promise<void>;
 }
