@@ -77,7 +77,6 @@ export default function AuthLogin({ title, subtitle, subtext }: LoginProps): Rea
 
   const googleAuth = useGoogleLogin({
     onSuccess: async (response: Omit<TokenResponse, 'error' | 'error_description' | 'error_uri'>) => {
-      console.log(response);
       try {
         if (response.access_token) {
           await googleLogin(response.access_token);

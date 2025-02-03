@@ -117,15 +117,7 @@ function AuthProvider({ children }: { children: ReactNode }): React.JSX.Element 
   };
 
   const googleLogin = async (tokenId: string): Promise<void> => {
-    const response: AxiosResponse<TokenResponse> = await axios.post<
-      TokenResponse,
-      AxiosResponse<TokenResponse>,
-      { tokenId: string }
-    >('auth/google-auth', { tokenId });
-
-
-
-    console.log('axios', response);
+    await axios.post<TokenResponse, AxiosResponse<TokenResponse>, { tokenId: string }>('auth/google-auth', { tokenId });
   };
 
   const logout = async (): Promise<void> => {
