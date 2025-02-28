@@ -1,5 +1,6 @@
 'use client';
 import React, { useEffect } from 'react';
+import Image from 'next/image';
 
 // MUI Imports
 import Box from '@mui/material/Box';
@@ -23,7 +24,26 @@ export default function GlobalError({
   return (
     <html lang="es-MX">
       <body>
-        <Box>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: '100vh',
+            width: '100vw',
+          }}
+        >
+          <Image
+            priority
+            alt="logo"
+            width={270}
+            height={170}
+            src="/images/logos/dark-logo.svg"
+            style={{
+              marginBottom: '2rem',
+            }}
+          />
           <Typography variant="h1" color="primary">
             Error 500
           </Typography>

@@ -105,7 +105,7 @@ export default function UsersTableView(): React.JSX.Element {
     () =>
       users?.map((user) => ({
         id: user.id,
-        image: user.url_image.length > 0 ? user.url_image : `${user.name} ${user.lastname}`,
+        image: user.url_image?.length > 0 ? user.url_image : `${user.name} ${user.lastname}`,
         name: `${user.name} ${user.lastname}`,
         type: user.type,
         email: user.email,

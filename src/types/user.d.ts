@@ -16,6 +16,17 @@ export interface SignInResponse {
   token: string;
 }
 
+export interface CreateUser {
+  name: string;
+  lastname: string;
+  email: string;
+  password: string;
+  tel: string;
+  type: string;
+  gender: string;
+  birthday: number;
+}
+
 export interface User {
   id: number;
   subscriptionId: null;
@@ -31,17 +42,6 @@ export interface User {
   type: string;
   status: boolean;
   token: null;
-}
-
-export interface CreateUser {
-  name: string;
-  lastname: string;
-  dob: Date;
-  phone: string;
-  email: string;
-  username: string;
-  role: UserRoles;
-  password: string;
 }
 
 export interface UpdatePassword {

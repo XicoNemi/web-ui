@@ -13,16 +13,18 @@ import Typography from '@mui/material/Typography';
 import { useAuth } from '@hooks/useAuth';
 import { toast } from '@components/core/toaster';
 
+import Loader from '@components/shared/Loader';
 import GoogleIcon from '@components/auth/GoogleIcon';
+import PasswordField from '@components/forms/PasswordField';
 import CustomTextField from '@components/forms/theme-elements/CustomTextField';
 
 // Third Party Imports
 import * as Yup from 'yup';
 
+import { AxiosError } from 'axios';
 import { type FormikHelpers, useFormik } from 'formik';
 import { useGoogleLogin, type TokenResponse } from '@react-oauth/google';
-import { AxiosError } from 'axios';
-import Loader from '../shared/Loader';
+
 
 interface LoginProps {
   title?: string;
@@ -132,13 +134,12 @@ export default function AuthLogin({ title, subtitle, subtext }: LoginProps): Rea
           <Typography variant="subtitle1" fontWeight={600} component="label" htmlFor="password" mb="5px">
             Contraseña
           </Typography>
-          <CustomTextField
+          <PasswordField
             name="password"
             onChange={handleChange}
             helperText={touched.password ? errors.password : null}
             error={hasErrorPassword}
             value={values.password}
-            type="password"
             disabled={isSubmitting}
             variant="outlined"
             fullWidth
