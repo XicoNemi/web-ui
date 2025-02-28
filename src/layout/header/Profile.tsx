@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 // MUI Imports
 import Box from '@mui/material/Box';
 import Menu from '@mui/material/Menu';
+import Typography from '@mui/material/Typography';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
@@ -15,12 +16,15 @@ import ListItemText from '@mui/material/ListItemText';
 import { useAuth } from '@hooks/useAuth';
 
 // Assets
-import { IconListCheck, IconMail, IconUser } from '@tabler/icons-react';
+import { IconUser } from '@tabler/icons-react';
+import stringToAvatar from '@/utils/stringToAvatar';
 
 export default function Profile(): React.JSX.Element {
-  const { logout } = useAuth();
   const router = useRouter();
+  const { logout, user } = useAuth();
+
   const [anchorEl2, setAnchorEl2] = useState<null | HTMLElement>(null);
+
   const handleClick2 = (event: React.MouseEvent<HTMLButtonElement>): void => {
     setAnchorEl2(event.currentTarget);
   };
@@ -43,14 +47,7 @@ export default function Profile(): React.JSX.Element {
         }}
         onClick={handleClick2}
       >
-        <Avatar
-          src="/images/profile/user-1.jpg"
-          alt="image"
-          sx={{
-            width: 35,
-            height: 35,
-          }}
-        />
+        <Avatar {...stringToAvatar(user?.name ?? 'Xico Nemi')} />
       </IconButton>
       {/* ------------------------------------------- */}
       {/* Message Dropdown */}
@@ -73,20 +70,13 @@ export default function Profile(): React.JSX.Element {
           <ListItemIcon>
             <IconUser width={20} />
           </ListItemIcon>
-          <ListItemText>My Profile</ListItemText>
+          <ListItemText>Mi Perfil</ListItemText>
         </MenuItem>
-        <MenuItem>
-          <ListItemIcon>
-            <IconMail width={20} />
-          </ListItemIcon>
-          <ListItemText>My Account</ListItemText>
-        </MenuItem>
-        <MenuItem>
-          <ListItemIcon>
-            <IconListCheck width={20} />
-          </ListItemIcon>
-          <ListItemText>My Tasks</ListItemText>
-        </MenuItem>
+        <Box mt={1} py={1} px={2}>
+          <Typography>
+            Bienvenido de nuevo: {user?.name} {user?.lastname}
+          </Typography>
+        </Box>
         <Box mt={1} py={1} px={2}>
           <Button
             variant="outlined"

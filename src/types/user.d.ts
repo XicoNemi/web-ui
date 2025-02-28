@@ -11,7 +11,10 @@ export interface SignUp {
   password: string;
 }
 
-export interface SignInResponse extends User {}
+export interface SignInResponse {
+  user: User;
+  token: string;
+}
 
 export interface User {
   id: number;

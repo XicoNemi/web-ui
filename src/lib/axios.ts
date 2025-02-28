@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const axiosServices = axios.create({ baseURL: '/api' });
+const axiosServices = axios.create({ baseURL: process.env.NEXT_PUBLIC_API_URL });
 
 // Add an interceptor to modify requests
 axiosServices.interceptors.request.use(

@@ -104,10 +104,10 @@ function AuthProvider({ children }: { children: ReactNode }): React.JSX.Element 
       SignInWithPasswordParams
     >('auth/sign-in', params);
 
-    const token = response.headers['auth-token'];
-    const userData = response.data;
+    const userData = response.data.user;
+    const token = response.data.token;
 
-    void setSession(token as string);
+    void setSession(token);
 
     if (userData) {
       localStorage.setItem('userData', JSON.stringify(userData));

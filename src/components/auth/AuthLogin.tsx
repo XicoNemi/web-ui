@@ -22,7 +22,7 @@ import CustomTextField from '@components/forms/theme-elements/CustomTextField';
 // Third Party Imports
 import * as Yup from 'yup';
 
-import { useFormik } from 'formik';
+import { type FormikHelpers, useFormik } from 'formik';
 import { useGoogleLogin, type TokenResponse } from '@react-oauth/google';
 
 interface LoginProps {
@@ -46,8 +46,9 @@ export default function AuthLogin({ title, subtitle, subtext }: LoginProps): Rea
   });
 
   const onSubmit = useCallback(
-    async (values: FormValues): Promise<void> => {
+    async (values: FormValues, { setSubmitting }: FormikHelpers<FormValues>): Promise<void> => {
       try {
+        setSubmitting(true);
         await login(values);
         toast.success('Sesión iniciada correctamente.');
       } catch (err: unknown) {
@@ -58,12 +59,13 @@ export default function AuthLogin({ title, subtitle, subtext }: LoginProps): Rea
         }
       } finally {
         router.refresh();
+        setSubmitting(false);
       }
     },
     [login, router]
   );
 
-  const { handleSubmit, values, handleChange, errors, touched } = useFormik<FormValues>({
+  const { handleSubmit, values, handleChange, errors, touched, isSubmitting } = useFormik<FormValues>({
     initialValues: {
       email: '',
       password: '',
@@ -167,6 +169,7 @@ export default function AuthLogin({ title, subtitle, subtext }: LoginProps): Rea
           variant="contained"
           sx={{ bgcolor: 'black' }}
           startIcon={<GoogleIcon />}
+          disabled={isSubmitting}
           onClick={() => {
             googleAuth();
           }}
