@@ -15,3 +15,6 @@ export const createUser = (data: CreateUser): Promise<CreateUser> =>
 
 export const updateUserById = ({ userId, data }: { userId: number; data: CreateUser }): Promise<CreateUser> =>
   axios.put<User>(`/users/${String(userId)}`, data).then((res: AxiosResponse<User>) => res.data);
+
+export const deleteUserById = (userId: number): Promise<void> =>
+  axios.delete(`/users/delete/${String(userId)}`).then((res: AxiosResponse<void>) => res.data);

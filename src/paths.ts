@@ -9,5 +9,6 @@ export const paths = {
     list: '/users',
     create: '/users/create',
     edit: (userId: string): string => `/users/${userId}/update`,
+    delete: (userId: string): string => `/users/${userId}/delete`,
   },
 };

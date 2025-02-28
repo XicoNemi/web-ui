@@ -16,6 +16,7 @@ import { DataGrid, type GridColDef } from '@mui/x-data-grid';
 
 // Project Imports
 import { paths } from '@/paths';
+import { useAuth } from '@/hooks/useAuth';
 import { getAllUsers } from '@/lib/services/api';
 
 import Loader from '@/components/shared/Loader';
@@ -26,8 +27,15 @@ import { useQuery } from '@tanstack/react-query';
 
 // assets
 import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react';
+import ConfirmDeleteModal from '@/components/users/ConfirmDeleteUserDialog';
 
 export default function UsersTableView(): React.JSX.Element {
+  const { user } = useAuth();
+  const [isOpen, setIsOpen] = React.useState(false);
+  const toggleModal = (): void => {
+    setIsOpen((prev) => !prev);
+  };
+
   const { data: users, isLoading } = useQuery({
     queryKey: ['users'],
     queryFn: getAllUsers,
@@ -82,35 +90,45 @@ export default function UsersTableView(): React.JSX.Element {
       filterable: false,
       hideable: false,
       renderCell: ({ value: userId }) => (
-        <Stack display="flex" flexDirection="row" alignItems="center" justifyContent="center" gap={1}>
-          <IconButton color="primary" aria-label="Delete" size="small" loading={isLoading}>
-            <IconTrash />
-          </IconButton>
-          <IconButton
-            size="small"
-            color="info"
-            aria-label="Edit"
-            loading={isLoading}
-            LinkComponent={Link}
-            href={paths.users.edit(userId as string)}
-          >
-            <IconEdit />
-          </IconButton>
-        </Stack>
+        <>
+          <Stack display="flex" flexDirection="row" alignItems="center" justifyContent="center" gap={1}>
+            <IconButton
+              onClick={toggleModal}
+              color="primary"
+              aria-label="Delete"
+              size="small"
+              loading={isLoading}
+              disabled={userId === user?.id}
+            >
+              <IconTrash />
+            </IconButton>
+            <IconButton
+              size="small"
+              color="info"
+              aria-label="Edit"
+              loading={isLoading}
+              LinkComponent={Link}
+              href={paths.users.edit(userId as string)}
+            >
+              <IconEdit />
+            </IconButton>
+          </Stack>
+          <ConfirmDeleteModal userId={userId} open={isOpen} toggleModal={toggleModal} />
+        </>
       ),
     },
   ];
 
   const rows = React.useMemo(
     () =>
-      users?.map((user) => ({
-        id: user.id,
-        image: user.url_image?.length > 0 ? user.url_image : `${user.name} ${user.lastname}`,
-        name: `${user.name} ${user.lastname}`,
-        type: user.type,
-        email: user.email,
-        tel: user.tel,
-        actions: user.id,
+      users?.map((userRow) => ({
+        id: userRow.id,
+        image: userRow.url_image?.length > 0 ? userRow.url_image : `${userRow.name} ${userRow.lastname}`,
+        name: `${userRow.name} ${userRow.lastname}`,
+        type: userRow.type,
+        email: userRow.email,
+        tel: userRow.tel,
+        actions: userRow.id,
       })) ?? [],
     [users]
   );
