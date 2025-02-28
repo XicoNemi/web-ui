@@ -1,16 +1,13 @@
 import React, { useCallback } from 'react';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 // MUI Imports
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
-import Checkbox from '@mui/material/Checkbox';
-import FormGroup from '@mui/material/FormGroup';
 import Typography from '@mui/material/Typography';
-import FormControlLabel from '@mui/material/FormControlLabel';
 
 // Project Imports
 import { useAuth } from '@hooks/useAuth';
@@ -24,6 +21,8 @@ import * as Yup from 'yup';
 
 import { type FormikHelpers, useFormik } from 'formik';
 import { useGoogleLogin, type TokenResponse } from '@react-oauth/google';
+import { AxiosError } from 'axios';
+import Loader from '../shared/Loader';
 
 interface LoginProps {
   title?: string;
@@ -52,8 +51,9 @@ export default function AuthLogin({ title, subtitle, subtext }: LoginProps): Rea
         await login(values);
         toast.success('Sesión iniciada correctamente.');
       } catch (err: unknown) {
-        if (err instanceof Error) {
-          toast.error(err.message);
+        if (err instanceof AxiosError) {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access -- safe to assume
+          toast.error((err.response?.data?.message as string) || err.message);
         } else {
           toast.error('Ha ocurrido un error inesperado.');
         }
@@ -97,6 +97,7 @@ export default function AuthLogin({ title, subtitle, subtext }: LoginProps): Rea
 
   return (
     <>
+      {isSubmitting ? <Loader /> : null}
       {title ? (
         <Typography fontWeight="700" variant="h2" mb={1}>
           {title}
@@ -118,11 +119,12 @@ export default function AuthLogin({ title, subtitle, subtext }: LoginProps): Rea
           </Typography>
           <CustomTextField
             name="email"
-            helperText={errors.email}
+            helperText={touched.email ? errors.email : null}
             error={hasErrorEmail}
             onChange={handleChange}
             value={values.email}
             variant="outlined"
+            disabled={isSubmitting}
             fullWidth
           />
         </Box>
@@ -133,22 +135,20 @@ export default function AuthLogin({ title, subtitle, subtext }: LoginProps): Rea
           <CustomTextField
             name="password"
             onChange={handleChange}
-            helperText={errors.password}
+            helperText={touched.password ? errors.password : null}
             error={hasErrorPassword}
             value={values.password}
             type="password"
+            disabled={isSubmitting}
             variant="outlined"
             fullWidth
           />
         </Box>
         <Stack justifyContent="space-between" direction="row" alignItems="center" my={2}>
-          <FormGroup>
-            <FormControlLabel control={<Checkbox defaultChecked />} label="Remeber this Device" />
-          </FormGroup>
           <Typography
-            component={Link}
             href="/"
             fontWeight="500"
+            component={Link}
             sx={{
               textDecoration: 'none',
               color: 'primary.main',
@@ -159,7 +159,15 @@ export default function AuthLogin({ title, subtitle, subtext }: LoginProps): Rea
         </Stack>
       </Box>
       <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', gap: 2 }}>
-        <Button color="primary" form="loginForm" variant="contained" size="large" fullWidth type="submit">
+        <Button
+          color="primary"
+          loading={isSubmitting}
+          form="loginForm"
+          variant="contained"
+          size="large"
+          fullWidth
+          type="submit"
+        >
           Iniciar Sesión
         </Button>
         <Divider flexItem />
@@ -169,7 +177,7 @@ export default function AuthLogin({ title, subtitle, subtext }: LoginProps): Rea
           variant="contained"
           sx={{ bgcolor: 'black' }}
           startIcon={<GoogleIcon />}
-          disabled={isSubmitting}
+          loading={isSubmitting}
           onClick={() => {
             googleAuth();
           }}

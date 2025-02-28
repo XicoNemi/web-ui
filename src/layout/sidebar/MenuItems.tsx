@@ -25,13 +25,13 @@ const Menuitems = [
   },
   {
     navlabel: true,
-    subheader: 'Usuarios',
+    subheader: 'Administrar',
   },
   {
     id: uniqueId(),
     title: 'Usuarios',
     icon: IconUsersGroup,
-    href: '/in-progress',
+    href: paths.users.list,
   },
   {
     navlabel: true,

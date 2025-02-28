@@ -18,15 +18,18 @@ export interface SignInResponse {
 
 export interface User {
   id: number;
+  subscriptionId: null;
+  facebookId: null;
   name: string;
   lastname: string;
   email: string;
   password: string;
   tel: string;
-  birthday: Date;
+  birthday: number;
+  gender: string;
+  url_image: string;
   type: string;
-  travelId: null;
-  active: boolean;
+  status: boolean;
   token: null;
 }
 

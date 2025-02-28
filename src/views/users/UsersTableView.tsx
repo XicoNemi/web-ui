@@ -1,0 +1,149 @@
+'use client';
+
+import * as React from 'react';
+import Link from 'next/link';
+
+// MUI Imports
+import Stack from '@mui/material/Stack';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+
+import { esES } from '@mui/x-data-grid/locales';
+import MuiLink from '@mui/material/Link';
+import { DataGrid, type GridColDef } from '@mui/x-data-grid';
+
+// Project Imports
+import { paths } from '@/paths';
+import { getAllUsers } from '@/lib/services/api';
+
+import Loader from '@/components/shared/Loader';
+import DashboardCard from '@components/shared/DashboardCard';
+
+// Third Party Imports
+import { useQuery } from '@tanstack/react-query';
+
+// assets
+import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react';
+
+export default function UsersTableView(): React.JSX.Element {
+  const { data: users, isLoading } = useQuery({
+    queryKey: ['users'],
+    queryFn: getAllUsers,
+  });
+
+  const columns: GridColDef[] = [
+    { field: 'id', headerName: 'ID', width: 70 },
+    {
+      field: 'image',
+      headerName: 'Imagen',
+      width: 130,
+      sortable: false,
+      filterable: false,
+      renderCell: ({ value }) => <Avatar src={value} alt={`${value as string} profile image`} />,
+    },
+    {
+      field: 'name',
+      headerName: 'Nombre Completo',
+      width: 250,
+    },
+    {
+      field: 'type',
+      headerName: 'Tipo/Rol',
+      width: 130,
+    },
+    {
+      field: 'email',
+      headerName: 'Correo',
+      width: 200,
+      renderCell: ({ value }) => (
+        <MuiLink href={`mailto:${value as string}`} underline="always">
+          {value}
+        </MuiLink>
+      ),
+    },
+    {
+      field: 'tel',
+      headerName: 'Teléfono',
+      width: 130,
+      renderCell: ({ value }) => (
+        <MuiLink href={`tel:${value as string}`} underline="always">
+          {value}
+        </MuiLink>
+      ),
+    },
+    {
+      field: 'actions',
+      headerName: 'Acciones',
+      width: 200,
+      headerAlign: 'center',
+      sortable: false,
+      filterable: false,
+      hideable: false,
+      renderCell: ({ value: userId }) => (
+        <Stack display="flex" flexDirection="row" alignItems="center" justifyContent="center" gap={1}>
+          <IconButton color="primary" aria-label="Delete" size="small" loading={isLoading}>
+            <IconTrash />
+          </IconButton>
+          <IconButton
+            size="small"
+            color="info"
+            aria-label="Edit"
+            loading={isLoading}
+            LinkComponent={Link}
+            href={paths.users.edit(userId as string)}
+          >
+            <IconEdit />
+          </IconButton>
+        </Stack>
+      ),
+    },
+  ];
+
+  const rows = React.useMemo(
+    () =>
+      users?.map((user) => ({
+        id: user.id,
+        image: user.url_image.length > 0 ? user.url_image : `${user.name} ${user.lastname}`,
+        name: `${user.name} ${user.lastname}`,
+        type: user.type,
+        email: user.email,
+        tel: user.tel,
+      })) ?? [],
+    [users]
+  );
+
+  return (
+    <>
+      {isLoading ? <Loader /> : null}
+      <DashboardCard
+        title={<Typography variant="h2">Usuarios</Typography>}
+        action={
+          <Button LinkComponent={Link} href={paths.users.create} startIcon={<IconPlus />} variant="contained">
+            Nuevo usuario
+          </Button>
+        }
+      >
+        <DataGrid
+          rows={rows}
+          columns={columns}
+          filterMode="server"
+          loading={isLoading}
+          density="comfortable"
+          aria-label="users-table"
+          pageSizeOptions={[5, 10, 15, 30]}
+          localeText={esES.components.MuiDataGrid.defaultProps.localeText}
+          initialState={{
+            pagination: {
+              paginationModel: {
+                page: 0,
+                pageSize: 5,
+              },
+            },
+          }}
+        />
+      </DashboardCard>
+    </>
+  );
+}

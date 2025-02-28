@@ -9,8 +9,7 @@ import Drawer from '@mui/material/Drawer';
 
 // Project Imports
 import SidebarItems from '@layout/sidebar/SidebarItems';
-
-import { Sidebar } from 'react-mui-sidebar';
+import CustomSidebar from '@layout/sidebar/CustomSidebar';
 import MainLogo from '@layout/shared/logo/Logo';
 
 interface ItemType {
@@ -65,14 +64,7 @@ export default function MSidebar({ isMobileSidebarOpen, onSidebarClose, isSideba
               height: '100%',
             }}
           >
-            <Sidebar
-              width="270px"
-              collapsewidth="80px"
-              open={isSidebarOpen}
-              themeColor="#5d87ff"
-              themeSecondaryColor="#49beff"
-              showProfile={false}
-            >
+            <CustomSidebar>
               {/* ------------------------------------------- */}
               {/* Logo */}
               {/* ------------------------------------------- */}
@@ -86,7 +78,7 @@ export default function MSidebar({ isMobileSidebarOpen, onSidebarClose, isSideba
                 {/* ------------------------------------------- */}
                 <SidebarItems />
               </Box>
-            </Sidebar>
+            </CustomSidebar>
           </Box>
         </Drawer>
       </Box>
@@ -110,20 +102,10 @@ export default function MSidebar({ isMobileSidebarOpen, onSidebarClose, isSideba
       {/* Sidebar Box */}
       {/* ------------------------------------------- */}
       <Box px={2}>
-        <Sidebar
-          width="270px"
-          collapsewidth="80px"
-          isCollapse={false}
-          mode="light"
-          direction="ltr"
-          themeColor="#5d87ff"
-          themeSecondaryColor="#49beff"
-          showProfile={false}
-        >
+        <CustomSidebar>
           {/* ------------------------------------------- */}
           {/* Logo */}
           {/* ------------------------------------------- */}
-
           <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', p: 1 }}>
             <MainLogo />
           </Box>
@@ -131,7 +113,7 @@ export default function MSidebar({ isMobileSidebarOpen, onSidebarClose, isSideba
           {/* Sidebar Items */}
           {/* ------------------------------------------- */}
           <SidebarItems />
-        </Sidebar>
+        </CustomSidebar>
       </Box>
       {/* ------------------------------------------- */}
       {/* Sidebar For Mobile */}

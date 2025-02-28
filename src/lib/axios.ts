@@ -9,7 +9,7 @@ axiosServices.interceptors.request.use(
       const serviceToken = localStorage.getItem('serviceToken');
 
       if (serviceToken) {
-        config.headers['auth-token'] = serviceToken;
+        config.headers.Authorization = `Bearer ${serviceToken}`;
       }
 
       return config;

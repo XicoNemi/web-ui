@@ -51,7 +51,7 @@ export const verifyToken = (serviceToken: string): boolean => {
 const setSession = async (serviceToken: string | null): Promise<void> => {
   if (serviceToken) {
     localStorage.setItem('serviceToken', serviceToken);
-    axios.defaults.headers.common['auth-token'] = serviceToken;
+    axios.defaults.headers.common.Authorization = serviceToken;
   } else {
     try {
       // await axios.post(
@@ -64,7 +64,7 @@ const setSession = async (serviceToken: string | null): Promise<void> => {
       //   }
       // );
       localStorage.clear();
-      delete axios.defaults.headers.common['auth-token'];
+      delete axios.defaults.headers.common.Authorization;
     } catch (error) {
       // eslint-disable-next-line no-console -- error handling
       console.error(error);
@@ -84,10 +84,13 @@ function AuthProvider({ children }: { children: ReactNode }): React.JSX.Element 
     const init = async (): Promise<void> => {
       try {
         const serviceToken = localStorage.getItem('serviceToken');
+        const storedUser = localStorage.getItem('userData');
 
         if (serviceToken && verifyToken(serviceToken)) {
           setIsLoggedIn(true);
-          setUser(user);
+          if (storedUser) {
+            setUser(JSON.parse(storedUser) as User);
+          }
         }
       } finally {
         setIsInitialized(true);
@@ -95,7 +98,7 @@ function AuthProvider({ children }: { children: ReactNode }): React.JSX.Element 
     };
 
     void init();
-  }, [user]);
+  }, []);
 
   const login = async (params: { email: string; password: string }): Promise<void> => {
     const response: AxiosResponse<SignInResponse> = await axios.post<
@@ -110,9 +113,9 @@ function AuthProvider({ children }: { children: ReactNode }): React.JSX.Element 
     void setSession(token);
 
     if (userData) {
+      setUser(userData);
       localStorage.setItem('userData', JSON.stringify(userData));
       setIsLoggedIn(true);
-      setUser(userData);
     }
   };
 

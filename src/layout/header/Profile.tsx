@@ -1,14 +1,17 @@
+'use client';
+
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 // MUI Imports
 import Box from '@mui/material/Box';
 import Menu from '@mui/material/Menu';
-import Typography from '@mui/material/Typography';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
+import Divider from '@mui/material/Divider';
 import MenuItem from '@mui/material/MenuItem';
 import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 
@@ -17,7 +20,7 @@ import { useAuth } from '@hooks/useAuth';
 
 // Assets
 import { IconUser } from '@tabler/icons-react';
-import stringToAvatar from '@/utils/stringToAvatar';
+import { stringToAvatar } from '@/utils/stringToAvatar';
 
 export default function Profile(): React.JSX.Element {
   const router = useRouter();
@@ -47,7 +50,11 @@ export default function Profile(): React.JSX.Element {
         }}
         onClick={handleClick2}
       >
-        <Avatar {...stringToAvatar(user?.name ?? 'Xico Nemi')} />
+        {user && user?.url_image.length > 0 ? (
+          <Avatar src={user.url_image} alt={`${user.name} - profile picture`} />
+        ) : (
+          <Avatar {...stringToAvatar(user ? `${user?.name}${user?.lastname}` : 'Xico Nemi')} />
+        )}
       </IconButton>
       {/* ------------------------------------------- */}
       {/* Message Dropdown */}
@@ -66,17 +73,28 @@ export default function Profile(): React.JSX.Element {
           },
         }}
       >
+        <Box
+          px={2}
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            gap: 1,
+            alignItems: 'flex-start',
+            flexWrap: 'wrap',
+          }}
+        >
+          <Typography>Bienvenido</Typography>
+          <Typography color="textSecondary">
+            {user?.name} {user?.lastname}
+          </Typography>
+        </Box>
+        <Divider sx={{ my: 1 }} />
         <MenuItem>
           <ListItemIcon>
             <IconUser width={20} />
           </ListItemIcon>
           <ListItemText>Mi Perfil</ListItemText>
         </MenuItem>
-        <Box mt={1} py={1} px={2}>
-          <Typography>
-            Bienvenido de nuevo: {user?.name} {user?.lastname}
-          </Typography>
-        </Box>
         <Box mt={1} py={1} px={2}>
           <Button
             variant="outlined"

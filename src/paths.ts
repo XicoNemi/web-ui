@@ -5,4 +5,9 @@ export const paths = {
     register: '/auth/register',
     forgotPassword: '/auth/forgot-password',
   },
+  users: {
+    list: '/users',
+    create: '/users/create',
+    edit: (userId: string): string => `/users/${userId}/edit`,
+  },
 };

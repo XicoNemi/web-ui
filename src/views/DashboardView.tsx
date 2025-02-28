@@ -3,7 +3,7 @@ import React from 'react';
 
 // MUI Imports
 import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
+import Grid from '@mui/material/Grid2';
 
 // Project Import
 import SalesOverview from '@components/dashboard/SalesOverview';
@@ -16,23 +16,23 @@ export default function DashboardView(): React.JSX.Element {
   return (
     <Box>
       <Grid container spacing={3}>
-        <Grid item xs={12} lg={8}>
+        <Grid size={{ xs: 12, lg: 8 }}>
           <SalesOverview />
         </Grid>
-        <Grid item xs={12} lg={4}>
+        <Grid size={{ xs: 12, lg: 4 }}>
           <Grid container spacing={3}>
-            <Grid item xs={12}>
+            <Grid size={12}>
               <YearlyBreakup />
             </Grid>
-            <Grid item xs={12}>
+            <Grid size={12}>
               <MonthlyEarnings />
             </Grid>
           </Grid>
         </Grid>
-        <Grid item xs={12} lg={4}>
+        <Grid size={{ xs: 12, lg: 4 }}>
           <RecentTransactions />
         </Grid>
-        <Grid item xs={12} lg={8}>
+        <Grid size={{ xs: 12, lg: 8 }}>
           <ProductPerformance />
         </Grid>
       </Grid>
