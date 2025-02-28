@@ -8,6 +8,6 @@ export const paths = {
   users: {
     list: '/users',
     create: '/users/create',
-    edit: (userId: string): string => `/users/${userId}/edit`,
+    edit: (userId: string): string => `/users/${userId}/update`,
   },
 };

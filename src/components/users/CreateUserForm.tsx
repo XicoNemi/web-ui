@@ -14,7 +14,7 @@ import type { CreateUser, User } from '@/types/user';
 
 import { paths } from '@/paths';
 import { toast } from '@components/core/toaster';
-import { createUser } from '@/lib/services/api';
+import { createUser, updateUserById } from '@/lib/services/api';
 
 import Loader from '@components/shared/Loader';
 import SelectInput from '@components/forms/SelectInput';
@@ -31,18 +31,34 @@ export default function CreateUserForm({ userData }: { userData?: User }): React
   const router = useRouter();
   const queryClient = useQueryClient();
 
+  const isUpdate = Boolean(userData);
+
+  const handleOnSuccess = async (successMessage: string): Promise<void> => {
+    toast.success(successMessage);
+    await queryClient.invalidateQueries({ queryKey: ['users'] });
+    if (isUpdate) await queryClient.invalidateQueries({ queryKey: ['user', userData!.id] });
+    router.push(paths.users.list);
+  };
+
   const { mutate: registerUser, isPending } = useMutation({
     mutationKey: ['createUser'],
     mutationFn: createUser,
-    onSuccess: async () => {
-      toast.success('Usuario creado correctamente');
-      await queryClient.invalidateQueries({ queryKey: ['users'] });
-      router.push(paths.users.list);
-    },
+    onSuccess: async () => handleOnSuccess('Usuario creado correctamente'),
     onError: (error: Error) => {
       toast.error(error.message ? error.message : 'Ha ocurrido un error al intentar crear el usuario');
     },
   });
+
+  const { mutate: updateUser, isPending: isPendingUpdate } = useMutation({
+    mutationKey: ['updateUser'],
+    mutationFn: ({ data }: { data: CreateUser }) => updateUserById({ userId: userData!.id, data }),
+    onSuccess: async () => handleOnSuccess('Usuario actualizado correctamente'),
+    onError: (error: Error) => {
+      toast.error(error.message ? error.message : 'Ha ocurrido un error al intentar actualizar el usuario');
+    },
+  });
+
+  const isLoading = isPending || isPendingUpdate;
 
   const { values, handleSubmit, handleChange, errors, touched, setFieldValue } = useFormik({
     initialValues: {
@@ -73,7 +89,12 @@ export default function CreateUserForm({ userData }: { userData?: User }): React
         ...sendValues,
         birthday: sendValues.birthday ? dayjs(sendValues.birthday).unix() : null,
       };
-      registerUser(formattedValues as CreateUser);
+
+      if (isUpdate) {
+        updateUser({ data: formattedValues as CreateUser });
+      } else {
+        registerUser(formattedValues as CreateUser);
+      }
     },
   });
 
@@ -89,7 +110,7 @@ export default function CreateUserForm({ userData }: { userData?: User }): React
 
   return (
     <>
-      {isPending ? <Loader /> : null}
+      {isLoading ? <Loader /> : null}
       <form onSubmit={handleSubmit}>
         <Grid container spacing={2}>
           <Grid size={{ xs: 12, md: 6 }}>
@@ -103,7 +124,7 @@ export default function CreateUserForm({ userData }: { userData?: User }): React
               value={values.name}
               helperText={hasErrorName ? errors.name : null}
               onChange={handleChange}
-              disabled={isPending}
+              disabled={isLoading}
             />
           </Grid>
           <Grid size={{ xs: 12, md: 6 }}>
@@ -117,7 +138,7 @@ export default function CreateUserForm({ userData }: { userData?: User }): React
               value={values.lastname}
               helperText={hasErrorLastName ? errors.lastname : null}
               onChange={handleChange}
-              disabled={isPending}
+              disabled={isLoading}
             />
           </Grid>
           <Grid size={{ xs: 12, md: 6 }}>
@@ -132,7 +153,7 @@ export default function CreateUserForm({ userData }: { userData?: User }): React
               error={hasErrorEmail}
               helperText={hasErrorEmail ? errors.email : ''}
               onChange={handleChange}
-              disabled={isPending}
+              disabled={isLoading}
             />
           </Grid>
           <Grid size={{ xs: 12, md: 6 }}>
@@ -147,7 +168,7 @@ export default function CreateUserForm({ userData }: { userData?: User }): React
               error={hasErrorTel}
               helperText={hasErrorTel ? errors.tel : ''}
               onChange={handleChange}
-              disabled={isPending}
+              disabled={isLoading}
             />
           </Grid>
           <Grid size={{ xs: 12, md: 6 }}>
@@ -162,7 +183,7 @@ export default function CreateUserForm({ userData }: { userData?: User }): React
               error={hasErrorPassword}
               helperText={hasErrorPassword ? errors.password : ''}
               onChange={handleChange}
-              disabled={isPending || Boolean(userData)}
+              disabled={isLoading}
             />
           </Grid>
           <Grid size={{ xs: 12, md: 6 }}>
@@ -176,7 +197,7 @@ export default function CreateUserForm({ userData }: { userData?: User }): React
               value={values.gender}
               labelId="select-gender"
               onChange={handleChange}
-              disabled={isPending}
+              disabled={isLoading}
               hasError={hasErrorGender}
               errorMessage={errors.gender}
               items={[
@@ -195,7 +216,7 @@ export default function CreateUserForm({ userData }: { userData?: User }): React
               ]}
             />
           </Grid>
-          <Grid size={{ xs: 12, md: 9 }}>
+          <Grid size={{ xs: 12, md: 8 }}>
             <SelectInput
               fullWidth
               id="type"
@@ -206,7 +227,7 @@ export default function CreateUserForm({ userData }: { userData?: User }): React
               value={values.type}
               labelId="select-type"
               onChange={handleChange}
-              disabled={isPending}
+              disabled={isLoading}
               hasError={hasErrorType}
               errorMessage={errors.type}
               items={[
@@ -225,7 +246,7 @@ export default function CreateUserForm({ userData }: { userData?: User }): React
               ]}
             />
           </Grid>
-          <Grid size={{ xs: 3 }}>
+          <Grid size={{ xs: 12, md: 4 }}>
             <CustomDatePicker
               label="Fecha de Nacimiento"
               value={values.birthday}
@@ -245,15 +266,15 @@ export default function CreateUserForm({ userData }: { userData?: User }): React
           >
             <Button
               LinkComponent={Link}
-              loading={isPending}
+              loading={isLoading}
               href={paths.users.list}
               variant="outlined"
               color="secondary"
             >
               Cancelar
             </Button>
-            <Button type="submit" loading={isPending} variant="contained" color="primary">
-              Crear
+            <Button type="submit" loading={isLoading} variant="contained" color="primary">
+              {userData ? 'Actualizar' : 'Crear'}
             </Button>
           </Grid>
         </Grid>

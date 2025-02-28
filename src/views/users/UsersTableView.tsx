@@ -110,6 +110,7 @@ export default function UsersTableView(): React.JSX.Element {
         type: user.type,
         email: user.email,
         tel: user.tel,
+        actions: user.id,
       })) ?? [],
     [users]
   );
