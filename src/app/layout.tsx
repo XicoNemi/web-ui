@@ -2,6 +2,7 @@ import React from 'react';
 import type { Metadata } from 'next';
 
 // Project Imports
+import './global.css';
 import ProviderWrapper from '@/components/providers/ProviderWrapper';
 
 // Metadata

@@ -41,6 +41,7 @@
     "react-dom": "18.2.0",
     "react-mui-sidebar": "^1.6.0",
     "sonner": "^1.7.0",
+    "swiper": "^11.2.4",
     "uuid": "^11.0.3",
     "yup": "^1.4.0"
   },

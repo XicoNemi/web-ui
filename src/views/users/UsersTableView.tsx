@@ -4,6 +4,7 @@ import * as React from 'react';
 import Link from 'next/link';
 
 // MUI Imports
+import Grid from '@mui/material/Grid2';
 import Stack from '@mui/material/Stack';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -28,6 +29,7 @@ import { useQuery } from '@tanstack/react-query';
 // assets
 import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react';
 import ConfirmDeleteModal from '@/components/users/ConfirmDeleteUserDialog';
+import ImagesSlider from '@/components/slider/ImagesSlider';
 
 export default function UsersTableView(): React.JSX.Element {
   const { user } = useAuth();
@@ -133,6 +135,14 @@ export default function UsersTableView(): React.JSX.Element {
     [users]
   );
 
+  const userImages = React.useMemo(
+    () =>
+      users
+        ?.filter((userRow) => userRow.url_image?.length > 0 && /^https?:/.test(userRow.url_image))
+        .map((userRow) => userRow.url_image) ?? [],
+    [users]
+  );
+
   return (
     <>
       {isLoading ? <Loader /> : null}
@@ -163,6 +173,9 @@ export default function UsersTableView(): React.JSX.Element {
           }}
         />
       </DashboardCard>
+      <Grid container>
+        <ImagesSlider data={userImages} />
+      </Grid>
     </>
   );
 }

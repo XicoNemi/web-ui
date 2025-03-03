@@ -1,0 +1,23 @@
+@import url('swiper/css');
+@import url('swiper/css/navigation');
+@import url('swiper/css/pagination');
+@import url('swiper/css/effect-coverflow');
+@import url('../components/slider/swiper-custom.css');
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+  display: block;
+  opacity: 1;
+}
+
+.swiper-disabled .swiper-button-next,
+.swiper-disabled .swiper-button-prev {
+  pointer-events: none;
+  opacity: 0.3;
+}
