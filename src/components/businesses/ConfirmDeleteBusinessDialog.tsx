@@ -11,7 +11,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 
 // Project Imports
 import { toast } from '@components/core/toaster';
-import { deleteUserById } from '@/lib/services/api';
+import { deleteBusinessById } from '@/lib/services/api';
 
 import Loader from '@components/shared/Loader';
 import CustomDialog from '@components/shared/CustomDialog';
@@ -22,23 +22,27 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 interface ConfirmDeleteModalProps {
   open: boolean;
   toggleModal: () => void;
-  userId: string;
+  businessId: string;
 }
 
-export default function ConfirmDeleteModal({ open, userId, toggleModal }: ConfirmDeleteModalProps): React.JSX.Element {
+export default function ConfirmDeleteBusinessModal({
+  open,
+  businessId,
+  toggleModal,
+}: ConfirmDeleteModalProps): React.JSX.Element {
   const queryClient = useQueryClient();
 
-  const { mutate: deleteUser, isPending } = useMutation({
-    mutationKey: ['deleteUser'],
-    mutationFn: () => deleteUserById(Number(userId)),
+  const { mutate: deleteBusiness, isPending } = useMutation({
+    mutationKey: ['deleteBusiness'],
+    mutationFn: () => deleteBusinessById(Number(businessId)),
     onSuccess: async () => {
-      toast.success('Usuario eliminado correctamente');
-      await queryClient.invalidateQueries({ queryKey: ['users'] });
-      await queryClient.invalidateQueries({ queryKey: ['user', userId] });
+      toast.success('Negocio eliminado correctamente');
+      await queryClient.invalidateQueries({ queryKey: ['businesses'] });
+      await queryClient.invalidateQueries({ queryKey: ['business', businessId] });
       toggleModal();
     },
     onError: (error: Error) => {
-      toast.error(error.message ? error.message : 'Ha ocurrido un error al intentar eliminar el usuario');
+      toast.error(error.message ? error.message : 'Ha ocurrido un error al intentar eliminar el negocio');
     },
   });
 
@@ -53,7 +57,7 @@ export default function ConfirmDeleteModal({ open, userId, toggleModal }: Confir
       >
         <DialogTitle>Confirmar Eliminación</DialogTitle>
         <DialogContent>
-          <DialogContentText>¿Estás seguro de que deseas eliminar este usuario?</DialogContentText>
+          <DialogContentText>¿Estás seguro de que deseas eliminar este negocio?</DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button
@@ -66,7 +70,7 @@ export default function ConfirmDeleteModal({ open, userId, toggleModal }: Confir
           </Button>
           <Button
             onClick={() => {
-              deleteUser();
+              deleteBusiness();
             }}
             color="secondary"
           >

@@ -9,7 +9,7 @@ import { paths } from '@/paths';
 import { useAuth } from '@hooks/useAuth';
 import { verifyToken } from '@contexts/auth/AuthContext';
 
-import Loader from '@components/shared/Loader';
+import GlobalLoader from '@/components/shared/GlobalLoader';
 
 export interface GuestGuardProps {
   children: React.ReactNode;
@@ -40,7 +40,7 @@ export function GuestGuard({ children }: GuestGuardProps): React.JSX.Element | n
   }, [user]);
 
   if (isChecking) {
-    return <Loader />;
+    return <GlobalLoader />;
   }
 
   return <React.Fragment>{children}</React.Fragment>;

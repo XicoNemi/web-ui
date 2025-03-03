@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import { paths } from '@/paths';
 import { verifyToken } from '@/contexts/auth/AuthContext';
 
-import Loader from '@/components/shared/Loader';
+import GlobalLoader from '@/components/shared/GlobalLoader';
 
 export interface AuthGuardProps {
   children: React.ReactNode;
@@ -25,7 +25,7 @@ export function AuthGuard({ children }: AuthGuardProps): React.JSX.Element | nul
   }, [serviceToken, router]);
 
   if (!serviceToken) {
-    return <Loader />;
+    return <GlobalLoader />;
   }
 
   return <React.Fragment>{children}</React.Fragment>;

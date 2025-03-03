@@ -12,7 +12,7 @@ import { jwtDecode } from 'jwt-decode';
 
 // Project Imports
 import axios from '@/lib/axios';
-import Loader from '@/components/shared/Loader';
+import GlobalLoader from '@/components/shared/GlobalLoader';
 
 import { toast } from '@components/core/toaster';
 
@@ -132,7 +132,7 @@ function AuthProvider({ children }: { children: ReactNode }): React.JSX.Element 
   };
 
   if (!isInitialized) {
-    return <Loader />;
+    return <GlobalLoader />;
   }
 
   return (

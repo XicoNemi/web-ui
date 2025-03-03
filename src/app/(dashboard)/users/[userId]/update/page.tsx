@@ -5,10 +5,10 @@ import UpdateUserView from '@/views/users/UpdateUserView';
 
 // Metadata
 export const metadata = {
-  title: 'XicoNemi | Actualizar Uusario',
+  title: 'XicoNemi | Actualizar Usuario',
   description: 'Actualizar un usuario en la plataforma',
 };
 
-export default function CreateUserPage(): React.JSX.Element {
+export default function UpdateUserPage(): React.JSX.Element {
   return <UpdateUserView />;
 }

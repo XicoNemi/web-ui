@@ -16,69 +16,73 @@ import { DataGrid, type GridColDef } from '@mui/x-data-grid';
 
 // Project Imports
 import { paths } from '@/paths';
-import { useAuth } from '@/hooks/useAuth';
-import { getAllUsers } from '@/lib/services/api';
+import { getBusinesses } from '@/lib/services/api';
 
-import Loader from '@/components/shared/Loader';
+import Loader from '@components/shared/Loader';
 import DashboardCard from '@components/shared/DashboardCard';
+import ConfirmDeleteBusinessModal from '@components/businesses/ConfirmDeleteBusinessDialog';
 
 // Third Party Imports
 import { useQuery } from '@tanstack/react-query';
 
 // assets
-import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react';
-import ConfirmDeleteModal from '@/components/users/ConfirmDeleteUserDialog';
+import { IconEdit, IconEye, IconPlus, IconTrash } from '@tabler/icons-react';
+import { getCategoryColor } from '@/utils/getCategoryColor';
 
-export default function UsersTableView(): React.JSX.Element {
-  const { user } = useAuth();
+export default function BusinessesTableView(): React.JSX.Element {
   const [isOpen, setIsOpen] = React.useState(false);
   const toggleModal = (): void => {
     setIsOpen((prev) => !prev);
   };
 
   const { data: users, isLoading } = useQuery({
-    queryKey: ['users'],
-    queryFn: getAllUsers,
+    queryKey: ['businesses'],
+    queryFn: getBusinesses,
   });
 
   const columns: GridColDef[] = [
-    { field: 'id', headerName: 'ID', width: 70 },
+    { field: 'id', headerName: 'ID', width: 70, hideable: false },
     {
       field: 'image',
       headerName: 'Imagen',
       width: 130,
       sortable: false,
       filterable: false,
-      renderCell: ({ value }) => <Avatar src={value} alt={`${value as string} profile image`} />,
+      renderCell: ({ value }) => <Avatar src={value} alt={`${value as string} business image`} />,
     },
     {
       field: 'name',
-      headerName: 'Nombre Completo',
-      width: 250,
-    },
-    {
-      field: 'type',
-      headerName: 'Tipo/Rol',
-      width: 130,
-    },
-    {
-      field: 'email',
-      headerName: 'Correo',
+      headerName: 'Nombre',
       width: 200,
+      headerAlign: 'center',
+    },
+    {
+      field: 'category',
+      headerName: 'Categoría',
+      width: 130,
       renderCell: ({ value }) => (
-        <MuiLink href={`mailto:${value as string}`} underline="always">
-          {value}
-        </MuiLink>
+        <Stack justifyContent="center" height="100%">
+          <Typography variant="body2" color={getCategoryColor(value as string)}>
+            {value}
+          </Typography>
+        </Stack>
       ),
+    },
+    {
+      field: 'address',
+      headerName: 'Dirección',
+      width: 250,
     },
     {
       field: 'tel',
       headerName: 'Teléfono',
       width: 130,
       renderCell: ({ value }) => (
-        <MuiLink href={`tel:${value as string}`} underline="always">
-          {value}
-        </MuiLink>
+        <Stack justifyContent="center" height="100%">
+          <MuiLink href={`tel:${value as string}`} underline="always">
+            {value}
+          </MuiLink>
+        </Stack>
       ),
     },
     {
@@ -89,18 +93,18 @@ export default function UsersTableView(): React.JSX.Element {
       sortable: false,
       filterable: false,
       hideable: false,
-      renderCell: ({ value: userId }) => (
+      renderCell: ({ value: businessId }) => (
         <>
           <Stack display="flex" flexDirection="row" alignItems="center" justifyContent="center" height="100%" gap={1}>
             <IconButton
-              onClick={toggleModal}
-              color="primary"
-              aria-label="Delete"
               size="small"
+              color="secondary"
               loading={isLoading}
-              disabled={userId === user?.id}
+              LinkComponent={Link}
+              aria-label="See details"
+              href={paths.businesses.details(businessId as string)}
             >
-              <IconTrash />
+              <IconEye />
             </IconButton>
             <IconButton
               size="small"
@@ -108,12 +112,15 @@ export default function UsersTableView(): React.JSX.Element {
               aria-label="Edit"
               loading={isLoading}
               LinkComponent={Link}
-              href={paths.users.edit(userId as string)}
+              href={paths.businesses.edit(businessId as string)}
             >
               <IconEdit />
             </IconButton>
+            <IconButton size="small" color="primary" aria-label="Delete" loading={isLoading} onClick={toggleModal}>
+              <IconTrash />
+            </IconButton>
           </Stack>
-          <ConfirmDeleteModal userId={userId} open={isOpen} toggleModal={toggleModal} />
+          <ConfirmDeleteBusinessModal businessId={businessId} open={isOpen} toggleModal={toggleModal} />
         </>
       ),
     },
@@ -121,14 +128,14 @@ export default function UsersTableView(): React.JSX.Element {
 
   const rows = React.useMemo(
     () =>
-      users?.map((userRow) => ({
-        id: userRow.id,
-        image: userRow.url_image?.length > 0 ? userRow.url_image : `${userRow.name} ${userRow.lastname}`,
-        name: `${userRow.name} ${userRow.lastname}`,
-        type: userRow.type,
-        email: userRow.email,
-        tel: userRow.tel,
-        actions: userRow.id,
+      users?.map((businessRow) => ({
+        id: businessRow.id,
+        image: businessRow.url_image?.length > 0 ? businessRow.url_image : businessRow.name,
+        name: businessRow.name,
+        category: businessRow.category,
+        address: businessRow.address,
+        tel: businessRow.tel,
+        actions: businessRow.id,
       })) ?? [],
     [users]
   );
@@ -137,10 +144,10 @@ export default function UsersTableView(): React.JSX.Element {
     <>
       {isLoading ? <Loader /> : null}
       <DashboardCard
-        title={<Typography variant="h2">Usuarios</Typography>}
+        title={<Typography variant="h2">Negocios</Typography>}
         action={
-          <Button LinkComponent={Link} href={paths.users.create} startIcon={<IconPlus />} variant="contained">
-            Nuevo usuario
+          <Button LinkComponent={Link} href={paths.businesses.create} startIcon={<IconPlus />} variant="contained">
+            Nuevo Negocio
           </Button>
         }
       >
@@ -150,7 +157,7 @@ export default function UsersTableView(): React.JSX.Element {
           filterMode="server"
           loading={isLoading}
           density="comfortable"
-          aria-label="users-table"
+          aria-label="businesses-table"
           pageSizeOptions={[5, 10, 15, 30]}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
           initialState={{

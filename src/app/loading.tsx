@@ -2,12 +2,12 @@ import React from 'react';
 import type { Metadata } from 'next';
 
 // Project Imports
-import Loader from '@/components/shared/Loader';
+import GlobalLoader from '@/components/shared/GlobalLoader';
 
 export const metadata: Metadata = {
-  title: 'XicoNemi | Loading',
+  title: 'XicoNemi | Cargando...',
 };
 
 export default function Loading(): React.JSX.Element {
-  return <Loader />;
+  return <GlobalLoader />;
 }

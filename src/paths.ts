@@ -11,4 +11,11 @@ export const paths = {
     edit: (userId: string): string => `/users/${userId}/update`,
     delete: (userId: string): string => `/users/${userId}/delete`,
   },
+  businesses: {
+    list: '/businesses',
+    create: '/businesses/create',
+    details: (businessId: string): string => `/businesses/${businessId}`,
+    edit: (businessId: string): string => `/businesses/${businessId}/update`,
+    delete: (businessId: string): string => `/businesses/${businessId}/delete`,
+  },
 };

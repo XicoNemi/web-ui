@@ -13,7 +13,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { v4 as uuidV4 } from 'uuid';
 
 interface SelectItem {
-  value: string;
+  value: string | number;
   label: string | React.ReactNode;
   disabled?: boolean;
 }
