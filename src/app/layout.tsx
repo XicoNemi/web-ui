@@ -34,20 +34,21 @@ export const metadata: Metadata = {
     siteName: 'XicoNemi',
     locale: 'es_MX',
   },
-  twitter: {
-    creator: '@XicoNemi',
-    creatorId: 'id',
-    card: 'summary_large_image',
-    title: 'XicoNemi - Impulsa tu negocio en los pueblos mágicos',
-    description:
-      'Con XicoNemi, podrás gestionar tu negocio o evento de manera eficiente y sencilla. ¡Descubre cómo podemos ayudarte a crecer!',
-    images: [
-      {
-        url: '/images/seo/dashboard.jpg',
-        alt: 'XicoNemi - Vista general de nuestro sistema',
-      },
-    ],
-  },
+  // TODO: Add Twitter metadata
+  // twitter: {
+  //   creator: '@XicoNemi',
+  //   creatorId: 'id',
+  //   card: 'summary_large_image',
+  //   title: 'XicoNemi - Impulsa tu negocio en los pueblos mágicos',
+  //   description:
+  //     'Con XicoNemi, podrás gestionar tu negocio o evento de manera eficiente y sencilla. ¡Descubre cómo podemos ayudarte a crecer!',
+  //   images: [
+  //     {
+  //       url: '/images/seo/dashboard.jpg',
+  //       alt: 'XicoNemi - Vista general de nuestro sistema',
+  //     },
+  //   ],
+  // },
 
   robots: 'index, follow',
 };
