@@ -18,4 +18,5 @@ export const paths = {
     edit: (businessId: string): string => `/businesses/${businessId}/update`,
     delete: (businessId: string): string => `/businesses/${businessId}/delete`,
   },
+  todoList: '/todo-list',
 };

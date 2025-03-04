@@ -1,5 +1,5 @@
 import { paths } from '@/paths';
-import { IconBrandGoogleAnalytics, IconUsersGroup, IconBuildingStore } from '@tabler/icons-react';
+import { IconBrandGoogleAnalytics, IconUsersGroup, IconBuildingStore, IconListCheck } from '@tabler/icons-react';
 
 import { v4 as uniqueId } from 'uuid';
 
@@ -15,6 +15,7 @@ const Menuitems = [
     icon: IconBrandGoogleAnalytics,
     href: paths.dashboard,
   },
+
   {
     navlabel: true,
     subheader: 'Administrar',
@@ -30,6 +31,16 @@ const Menuitems = [
     title: 'Negocios',
     icon: IconBuildingStore,
     href: paths.businesses.list,
+  },
+  {
+    navlabel: true,
+    subheader: 'Otras Apps',
+  },
+  {
+    id: uniqueId(),
+    title: 'Lista de Tareas',
+    icon: IconListCheck,
+    href: paths.todoList,
   },
 ];
 
