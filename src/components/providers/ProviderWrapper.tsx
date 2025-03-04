@@ -21,21 +21,20 @@ interface ProviderWrapperProps {
   children: React.ReactNode;
 }
 
-const clientId =
-  process.env.NEXT_PUBLIC_GOOGLE_CLIENT ?? 'google-client-id';
+const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT ?? 'google-client-id';
 
 export default function ProviderWrapper({ children }: ProviderWrapperProps): React.JSX.Element {
   return (
-    <ReactQueryProvider>
-      <Toaster position="bottom-right" richColors />
-      <ThemeProvider theme={baselightTheme}>
-        {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-        <CssBaseline />
+    <GoogleOAuthProvider clientId={clientId}>
+      <ReactQueryProvider>
+        <Toaster position="bottom-right" richColors />
+        <ThemeProvider theme={baselightTheme}>
+          {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+          <CssBaseline />
 
-        <GoogleOAuthProvider clientId={clientId}>
           <AuthProvider>{children}</AuthProvider>
-        </GoogleOAuthProvider>
-      </ThemeProvider>
-    </ReactQueryProvider>
+        </ThemeProvider>
+      </ReactQueryProvider>
+    </GoogleOAuthProvider>
   );
 }

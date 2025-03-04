@@ -22,14 +22,15 @@ export default function TodoListView(): React.JSX.Element {
   const [todos, setTodos] = React.useState<Todo[]>([]);
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
 
+  // Cargar tareas desde localStorage cuando el componente se monta
   React.useEffect(() => {
     const storedTodos = localStorage.getItem('todos');
     if (storedTodos) {
       try {
         const parsedTodos: Todo[] = JSON.parse(storedTodos);
         setTodos(parsedTodos);
-      } catch (err) {
-        toast.error('Error al cargar las tareas guardas');
+      } catch (error) {
+        toast.error('Error al cargar las tareas');
       }
     }
   }, []);

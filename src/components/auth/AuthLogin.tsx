@@ -14,7 +14,6 @@ import { useAuth } from '@hooks/useAuth';
 import { toast } from '@components/core/toaster';
 
 import Loader from '@components/shared/Loader';
-import GoogleIcon from '@components/auth/GoogleIcon';
 import PasswordField from '@components/forms/PasswordField';
 import CustomTextField from '@components/forms/theme-elements/CustomTextField';
 
@@ -23,8 +22,7 @@ import * as Yup from 'yup';
 
 import { AxiosError } from 'axios';
 import { type FormikHelpers, useFormik } from 'formik';
-import { useGoogleLogin, type TokenResponse } from '@react-oauth/google';
-
+import { type CredentialResponse, GoogleLogin } from '@react-oauth/google';
 
 interface LoginProps {
   title?: string;
@@ -79,30 +77,12 @@ export default function AuthLogin({ title, subtitle, subtext }: LoginProps): Rea
   const hasErrorEmail = Boolean(errors.email && touched.email);
   const hasErrorPassword = Boolean(errors.password && touched.password);
 
-  const googleAuth = useGoogleLogin({
-    onSuccess: async (response: Omit<TokenResponse, 'error' | 'error_description' | 'error_uri'>) => {
-      try {
-        if (response.access_token) {
-          await googleLogin(response.access_token);
-          toast.success('Sesión iniciada correctamente con Google.');
-        } else {
-          toast.error('Error con la autenticación de Google.');
-        }
-      } catch (error) {
-        toast.error('Error con la autenticación de Google.');
-      }
-    },
-    onError: () => {
-      toast.error('Error con la autenticación de Google.');
-    },
-  });
-
   return (
     <>
       {isSubmitting ? <Loader /> : null}
       {title ? (
         <Typography fontWeight="700" variant="h2" mb={1}>
-          {title}
+          {title}asd
         </Typography>
       ) : null}
 
@@ -172,19 +152,33 @@ export default function AuthLogin({ title, subtitle, subtext }: LoginProps): Rea
           Iniciar Sesión
         </Button>
         <Divider flexItem />
-        <Button
-          fullWidth
-          size="large"
-          variant="contained"
-          sx={{ bgcolor: 'black' }}
-          startIcon={<GoogleIcon />}
-          loading={isSubmitting}
-          onClick={() => {
-            googleAuth();
-          }}
-        >
-          Iniciar sesión con Google
-        </Button>
+        <Box sx={{ width: '100%' }}>
+          <GoogleLogin
+            onSuccess={async (response: CredentialResponse) => {
+              try {
+                if (response.credential) {
+                  await googleLogin(response.credential);
+                  toast.success('Sesión iniciada correctamente con Google.');
+                } else {
+                  toast.error('Error con la autenticación de Google.');
+                }
+              } catch (error) {
+                toast.error('Error con la autenticación de Google.');
+              }
+            }}
+            onError={() => {
+              toast.error('Error con la autenticación de Google.');
+            }}
+            useOneTap
+            locale="es"
+            size="large"
+            width="100%"
+            context="signin"
+            shape="rectangular"
+            text="continue_with"
+            theme="filled_black"
+          />
+        </Box>
       </Box>
       {subtitle}
     </>

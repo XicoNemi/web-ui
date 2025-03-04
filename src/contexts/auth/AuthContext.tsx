@@ -6,7 +6,7 @@ import type { ReactNode } from 'react';
 import type { AxiosResponse } from 'axios';
 import type { AuthContextValue } from '@/contexts/auth/types';
 import type { SignInResponse, User } from '@/types/user';
-import { type TokenResponse } from '@react-oauth/google';
+
 // Third Party Imports
 import { jwtDecode } from 'jwt-decode';
 
@@ -120,7 +120,22 @@ function AuthProvider({ children }: { children: ReactNode }): React.JSX.Element 
   };
 
   const googleLogin = async (tokenId: string): Promise<void> => {
-    await axios.post<TokenResponse, AxiosResponse<TokenResponse>, { tokenId: string }>('auth/google-auth', { tokenId });
+    const response: AxiosResponse<SignInResponse> = await axios.post<
+      SignInResponse,
+      AxiosResponse<SignInResponse>,
+      { tokenId: string }
+    >('auth/google-auth', { tokenId });
+
+    const userData = response.data.user;
+    const token = response.data.token;
+
+    void setSession(token);
+
+    if (userData) {
+      setUser(userData);
+      localStorage.setItem('userData', JSON.stringify(userData));
+      setIsLoggedIn(true);
+    }
   };
 
   const logout = async (): Promise<void> => {
