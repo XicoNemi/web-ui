@@ -50,7 +50,7 @@ export default function Profile(): React.JSX.Element {
         }}
         onClick={handleClick2}
       >
-        {user && user?.url_image.length > 0 ? (
+        {user && user?.url_image?.length > 0 ? (
           <Avatar src={user.url_image} alt={`${user.name} - profile picture`} />
         ) : (
           <Avatar {...stringToAvatar(user ? `${user?.name}${user?.lastname}` : 'Xico Nemi')} />

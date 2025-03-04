@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
@@ -38,6 +38,7 @@ interface FormValues {
 export default function AuthLogin({ title, subtitle, subtext }: LoginProps): React.JSX.Element {
   const router = useRouter();
   const { login, googleLogin } = useAuth();
+  const [isGoogleSubmitting, setIsGoogleSubmitting] = useState<boolean>(false);
 
   const validationSchema = Yup.object({
     email: Yup.string().email('Ingresa un correo válido').required('Ingresa tu correo'),
@@ -77,9 +78,11 @@ export default function AuthLogin({ title, subtitle, subtext }: LoginProps): Rea
   const hasErrorEmail = Boolean(errors.email && touched.email);
   const hasErrorPassword = Boolean(errors.password && touched.password);
 
+  const isLoading = isSubmitting || isGoogleSubmitting;
+
   return (
     <>
-      {isSubmitting ? <Loader /> : null}
+      {isLoading ? <Loader /> : null}
       {title ? (
         <Typography fontWeight="700" variant="h2" mb={1}>
           {title}asd
@@ -106,7 +109,7 @@ export default function AuthLogin({ title, subtitle, subtext }: LoginProps): Rea
             onChange={handleChange}
             value={values.email}
             variant="outlined"
-            disabled={isSubmitting}
+            disabled={isLoading}
             fullWidth
           />
         </Box>
@@ -120,7 +123,7 @@ export default function AuthLogin({ title, subtitle, subtext }: LoginProps): Rea
             helperText={touched.password ? errors.password : null}
             error={hasErrorPassword}
             value={values.password}
-            disabled={isSubmitting}
+            disabled={isLoading}
             variant="outlined"
             fullWidth
           />
@@ -142,7 +145,7 @@ export default function AuthLogin({ title, subtitle, subtext }: LoginProps): Rea
       <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', gap: 2 }}>
         <Button
           color="primary"
-          loading={isSubmitting}
+          loading={isLoading}
           form="loginForm"
           variant="contained"
           size="large"
@@ -152,10 +155,11 @@ export default function AuthLogin({ title, subtitle, subtext }: LoginProps): Rea
           Iniciar Sesión
         </Button>
         <Divider flexItem />
-        <Box sx={{ width: '100%' }}>
+        <Box sx={{ width: '100%'}}>
           <GoogleLogin
             onSuccess={async (response: CredentialResponse) => {
               try {
+                setIsGoogleSubmitting(true);
                 if (response.credential) {
                   await googleLogin(response.credential);
                   toast.success('Sesión iniciada correctamente con Google.');
@@ -164,10 +168,14 @@ export default function AuthLogin({ title, subtitle, subtext }: LoginProps): Rea
                 }
               } catch (error) {
                 toast.error('Error con la autenticación de Google.');
+              } finally {
+                router.refresh();
+                setIsGoogleSubmitting(false);
               }
             }}
             onError={() => {
               toast.error('Error con la autenticación de Google.');
+              setIsGoogleSubmitting(false);
             }}
             useOneTap
             locale="es"
@@ -177,6 +185,7 @@ export default function AuthLogin({ title, subtitle, subtext }: LoginProps): Rea
             shape="rectangular"
             text="continue_with"
             theme="filled_black"
+            cancel_on_tap_outside
           />
         </Box>
       </Box>

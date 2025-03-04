@@ -44,14 +44,16 @@ export default function GlobalError({
               marginBottom: '2rem',
             }}
           />
-          <Typography variant="h1" color="primary">
+          <Typography variant="h1" sx={{ color: '#E6077E' }}>
             Error 500
           </Typography>
           <Typography variant="h2">Internal Server Error</Typography>
           <Typography>
-            ¡Oh No! Algo salió mal y no podemos encontrar una ruta. Intenta de nuevo o vuelve más tarde.
+            ¡Oh No! Algo salió mal y no podemos encontrar una ruta, te pedimos una sincera disculpa de parte del Dream Team de XicoNemi 😔. Intenta de nuevo o vuelve más tarde.
           </Typography>
-          <Button onClick={reset}>Try again</Button>
+          <Button onClick={reset} variant="contained" sx={{ bgcolor: '#E6077E' }}>
+            Intentar de Nuevo
+          </Button>
         </Box>
       </body>
     </html>
