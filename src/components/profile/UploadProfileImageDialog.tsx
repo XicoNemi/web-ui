@@ -53,8 +53,6 @@ export default function UploadProfileImageDialog({ open, onClose }: UploadProfil
     },
     validationSchema,
     onSubmit: (values, { resetForm }) => {
-      console.log(values.file);
-
       if (values.file?.blob) {
         uploadImage(values.file.blob);
       }

@@ -32,7 +32,7 @@ export default function UpdateBusinessView(): React.JSX.Element {
   } = useQuery({
     enabled: Boolean(businessId),
     queryKey: ['business', businessId ?? ''],
-    queryFn: () => getBusinessById(businessId),
+    queryFn: () => getBusinessById(businessId as string),
   });
 
   return (
