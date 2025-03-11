@@ -30,7 +30,7 @@ export default function UpdateUserView(): React.JSX.Element {
     refetch,
   } = useQuery({
     queryKey: ['user', userId ?? ''],
-    queryFn: () => getUserById(Number(userId)),
+    queryFn: () => getUserById(userId),
     enabled: Boolean(userId),
   });
   return (

@@ -39,6 +39,7 @@
     "react": "18.2.0",
     "react-apexcharts": "1.4.1",
     "react-dom": "18.2.0",
+    "react-dropzone": "^14.3.8",
     "react-mui-sidebar": "^1.6.0",
     "sonner": "^1.7.0",
     "swiper": "^11.2.4",

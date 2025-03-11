@@ -94,7 +94,7 @@ export default function CreateBusinessForm({ businessData }: { businessData?: Bu
         .required('Este campo es requerido'),
       address: yup.string().required('Este campo es requerido'),
       category: yup.mixed<Category>().oneOf(Object.values(categories)).required('Este campo es requerido'),
-      ownerId: yup.number().min(1, 'Selecciona un dueño para este negocio').required('Este campo es requerido'),
+      ownerId: yup.string().required('Este campo es requerido'),
       status: yup.boolean().required('Este campo es requerido'),
     }),
     onSubmit: (sendValues) => {

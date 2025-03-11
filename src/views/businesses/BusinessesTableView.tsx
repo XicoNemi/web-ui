@@ -17,6 +17,7 @@ import { DataGrid, type GridColDef } from '@mui/x-data-grid';
 // Project Imports
 import { paths } from '@/paths';
 import { getBusinesses } from '@/lib/services/api';
+import { getCategoryColor } from '@/utils/getCategoryColor';
 
 import Loader from '@components/shared/Loader';
 import DashboardCard from '@components/shared/DashboardCard';
@@ -27,7 +28,6 @@ import { useQuery } from '@tanstack/react-query';
 
 // assets
 import { IconEdit, IconEye, IconPlus, IconTrash } from '@tabler/icons-react';
-import { getCategoryColor } from '@/utils/getCategoryColor';
 
 export default function BusinessesTableView(): React.JSX.Element {
   const [isOpen, setIsOpen] = React.useState(false);
@@ -35,7 +35,7 @@ export default function BusinessesTableView(): React.JSX.Element {
     setIsOpen((prev) => !prev);
   };
 
-  const { data: users, isLoading } = useQuery({
+  const { data: businesses, isLoading } = useQuery({
     queryKey: ['businesses'],
     queryFn: getBusinesses,
   });
@@ -128,16 +128,18 @@ export default function BusinessesTableView(): React.JSX.Element {
 
   const rows = React.useMemo(
     () =>
-      users?.map((businessRow) => ({
-        id: businessRow.id,
-        image: businessRow.url_image?.length > 0 ? businessRow.url_image : businessRow.name,
-        name: businessRow.name,
-        category: businessRow.category,
-        address: businessRow.address,
-        tel: businessRow.tel,
-        actions: businessRow.id,
-      })) ?? [],
-    [users]
+      businesses && businesses.length > 0
+        ? businesses.map((businessRow) => ({
+            id: businessRow.id,
+            image: businessRow.url_image?.length > 0 ? businessRow.url_image : businessRow.name,
+            name: businessRow.name,
+            category: businessRow.category,
+            address: businessRow.address,
+            tel: businessRow.tel,
+            actions: businessRow.id,
+          }))
+        : [],
+    [businesses]
   );
 
   return (

@@ -18,6 +18,7 @@ import { DataGrid, type GridColDef } from '@mui/x-data-grid';
 import { paths } from '@/paths';
 import { useAuth } from '@/hooks/useAuth';
 import { getAllUsers } from '@/lib/services/api';
+import getUserRole from '@/utils/getUserRole';
 
 import Loader from '@/components/shared/Loader';
 import DashboardCard from '@components/shared/DashboardCard';
@@ -60,6 +61,7 @@ export default function UsersTableView(): React.JSX.Element {
       field: 'type',
       headerName: 'Tipo/Rol',
       width: 130,
+      valueFormatter: (value) => getUserRole(value as string),
     },
     {
       field: 'email',

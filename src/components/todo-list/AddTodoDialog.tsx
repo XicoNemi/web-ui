@@ -10,6 +10,9 @@ import DialogContent from '@mui/material/DialogContent';
 
 // Project Imports
 import type { Todo } from '@/types/todo';
+import { toast } from '@components/core/toaster';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { createTodo } from '@/lib/services/todo-api';
 
 // Third Party Imports
 import * as yup from 'yup';
@@ -18,7 +21,6 @@ import { useFormik } from 'formik';
 interface AddTodoDialogProps {
   open: boolean;
   onClose: () => void;
-  onAdd: (newTodo: Todo) => void;
 }
 
 const validationSchema = yup.object({
@@ -26,7 +28,21 @@ const validationSchema = yup.object({
   description: yup.string().required('La descripción es requerida'),
 });
 
-export default function AddTodoDialog({ open, onClose, onAdd }: AddTodoDialogProps): React.JSX.Element {
+export default function AddTodoDialog({ open, onClose }: AddTodoDialogProps): React.JSX.Element {
+  const queryClient = useQueryClient();
+
+  const addTodoMutation = useMutation({
+    mutationKey: ['addTodo'],
+    mutationFn: createTodo,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['todos'] });
+      toast.success('Tarea agregada con éxito');
+    },
+    onError: () => {
+      toast.error('Error al agregar la tarea');
+    },
+  });
+
   const formik = useFormik({
     initialValues: {
       title: '',
@@ -40,7 +56,7 @@ export default function AddTodoDialog({ open, onClose, onAdd }: AddTodoDialogPro
         description: values.description,
         completed: false,
       };
-      onAdd(newTodo);
+      addTodoMutation.mutate(newTodo);
       resetForm();
       onClose();
     },

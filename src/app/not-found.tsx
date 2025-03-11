@@ -1,22 +1,16 @@
 import React from 'react';
 import Image from 'next/image';
-import { redirect } from 'next/navigation';
 
 // MUI Imports
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import BackToHomeButton from '@/components/core/BackToHomeButton';
 
 export const metadata = {
   title: 'XicoNemi | Página No Encontrada',
 };
 
 export default function NotFound(): React.JSX.Element {
-  async function handleRedirect(): Promise<void> {
-    'use server';
-    redirect('/');
-  }
-
   return (
     <Box
       sx={{
@@ -45,16 +39,7 @@ export default function NotFound(): React.JSX.Element {
         ¡Oh No! la ruta que seguías no pudo ser encontrada 😔. Intenta de nuevo o regresa al inicio.
       </Typography>
 
-      <form
-        action={handleRedirect}
-        style={{
-          marginTop: '2rem',
-        }}
-      >
-        <Button color="primary" variant="contained" type="submit">
-          Regresar al Inicio
-        </Button>
-      </form>
+      <BackToHomeButton />
     </Box>
   );
 }
