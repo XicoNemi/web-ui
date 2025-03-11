@@ -30,7 +30,7 @@ export default function ConfirmDeleteModal({ open, userId, toggleModal }: Confir
 
   const { mutate: deleteUser, isPending } = useMutation({
     mutationKey: ['deleteUser'],
-    mutationFn: () => deleteUserById(Number(userId)),
+    mutationFn: () => deleteUserById(userId),
     onSuccess: async () => {
       toast.success('Usuario eliminado correctamente');
       await queryClient.invalidateQueries({ queryKey: ['users'] });

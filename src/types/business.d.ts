@@ -2,8 +2,8 @@ import type { Category } from "@types/category";
 
 export interface Business {
   message?: boolean;
-  id: number;
-  ownerId: number;
+  id: string;
+  ownerId: string;
   name: string;
   description: string;
   url_image: string;
@@ -16,7 +16,7 @@ export interface Business {
 }
 
 export interface CreateBusiness {
-  ownerId: number;
+  ownerId: string;
   name: string;
   description: string;
   category: Category;

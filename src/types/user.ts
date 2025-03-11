@@ -1,4 +1,8 @@
-export type UserRoles = 'Admin' | 'User';
+export enum UserRoles {
+  Common = 'Common',
+  BusinessOwner = 'BusinessOwner',
+  SuperAdmin = 'SuperAdmin',
+}
 
 export interface SignUp {
   name: string;
@@ -22,13 +26,13 @@ export interface CreateUser {
   email: string;
   password: string;
   tel: string;
-  type: string;
+  type: UserRoles;
   gender: string;
   birthday: number;
 }
 
 export interface User {
-  id: number;
+  id: string;
   subscriptionId: null;
   facebookId: null;
   name: string;
@@ -39,7 +43,7 @@ export interface User {
   birthday: number;
   gender: string;
   url_image: string;
-  type: string;
+  type: UserRoles;
   status: boolean;
   token: null;
 }

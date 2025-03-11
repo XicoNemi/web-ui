@@ -48,7 +48,7 @@ export default function BusinessDetailsView({ businessId }: BusinessDetailsViewP
   } = useQuery({
     enabled: Boolean(businessData?.ownerId),
     queryKey: ['user', businessData?.ownerId],
-    queryFn: () => getUserById(businessData?.ownerId ?? 0),
+    queryFn: () => getUserById(businessData?.ownerId ?? ''),
   });
 
   const isLoading = isLoadingBusiness || isLoadingOwner;

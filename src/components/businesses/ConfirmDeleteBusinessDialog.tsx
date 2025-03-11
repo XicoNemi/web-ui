@@ -34,7 +34,7 @@ export default function ConfirmDeleteBusinessModal({
 
   const { mutate: deleteBusiness, isPending } = useMutation({
     mutationKey: ['deleteBusiness'],
-    mutationFn: () => deleteBusinessById(Number(businessId)),
+    mutationFn: () => deleteBusinessById(businessId),
     onSuccess: async () => {
       toast.success('Negocio eliminado correctamente');
       await queryClient.invalidateQueries({ queryKey: ['businesses'] });
