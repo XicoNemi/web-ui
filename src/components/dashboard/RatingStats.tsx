@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState } from 'react';
 import dynamic from 'next/dynamic';
 
@@ -5,16 +7,24 @@ import dynamic from 'next/dynamic';
 import useTheme from '@mui/material/styles/useTheme';
 import Select, { type SelectChangeEvent } from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
+import Skeleton from '@mui/material/Skeleton';
 
 // Project Imports
 import DashboardCard from '@components/shared/DashboardCard';
 
 // Third Party Imports
+import { useQuery } from '@tanstack/react-query';
 import type { ApexOptions } from 'apexcharts';
+import { getAverageRatingStats } from '@/lib/services/api';
 
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
-export default function SalesOverview(): React.JSX.Element {
+export default function RatingStats(): React.JSX.Element {
+  const { data: ratingStats, isLoading } = useQuery({
+    queryKey: ['ratingStats'],
+    queryFn: getAverageRatingStats,
+  });
+
   // select
   const [month, setMonth] = useState('1');
 
@@ -27,7 +37,7 @@ export default function SalesOverview(): React.JSX.Element {
   const primary = theme.palette.primary.main;
   const secondary = theme.palette.secondary.main;
 
-  // chart
+  // chart options
   const optionscolumnchart: ApexOptions = {
     chart: {
       type: 'bar',
@@ -49,7 +59,6 @@ export default function SalesOverview(): React.JSX.Element {
         borderRadiusWhenStacked: 'all',
       },
     },
-
     stroke: {
       show: true,
       width: 5,
@@ -75,7 +84,7 @@ export default function SalesOverview(): React.JSX.Element {
       tickAmount: 4,
     },
     xaxis: {
-      categories: ['16/08', '17/08', '18/08', '19/08', '20/08', '21/08', '22/08', '23/08'],
+      categories: ratingStats ? ratingStats.map((stat) => stat.name) : [],
       axisBorder: {
         show: false,
       },
@@ -85,20 +94,17 @@ export default function SalesOverview(): React.JSX.Element {
       fillSeriesColor: false,
     },
   };
-  const seriescolumnchart: { name: string; data: number[] }[] = [
+
+  const seriescolumnchart = [
     {
-      name: 'Eanings this month',
-      data: [355, 390, 300, 350, 390, 180, 355, 390],
-    },
-    {
-      name: 'Expense this month',
-      data: [280, 250, 325, 215, 250, 310, 280, 250],
+      name: 'Valoración promedio',
+      data: ratingStats ? ratingStats.map((stat) => parseFloat(String(stat.rating))) : [],
     },
   ];
 
   return (
     <DashboardCard
-      title="Sales Overview"
+      title="Estadísticas de Valoración por Negocio"
       action={
         <Select labelId="month-dd" id="month-dd" value={month} size="small" onChange={handleChange}>
           <MenuItem value={1}>March 2023</MenuItem>
@@ -107,7 +113,11 @@ export default function SalesOverview(): React.JSX.Element {
         </Select>
       }
     >
-      <Chart options={optionscolumnchart} series={seriescolumnchart} type="bar" height={370} width="100%" />
+      {isLoading ? (
+        <Skeleton variant="rectangular" width="100%" height={370} />
+      ) : (
+        <Chart options={optionscolumnchart} series={seriescolumnchart} type="bar" height={370} width="100%" />
+      )}
     </DashboardCard>
   );
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 
 // Project Imports
-import BusinessesTableView from '@/views/businesses/BusinessesTableView';
+import BusinessesListView from '@/views/businesses/BusinessesListView';
 
 // Metadata
 export const metadata = {
@@ -10,5 +10,5 @@ export const metadata = {
 };
 
 export default function BusinessesPage(): React.JSX.Element {
-  return <BusinessesTableView />;
+  return <BusinessesListView />;
 }

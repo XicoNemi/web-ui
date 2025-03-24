@@ -6,8 +6,8 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid2';
 
 // Project Import
-import SalesOverview from '@components/dashboard/SalesOverview';
-import YearlyBreakup from '@components/dashboard/YearlyBreakup';
+import RatingStats from '@components/dashboard/RatingStats';
+import GenderStats from '@components/dashboard/GenderStats';
 import MonthlyEarnings from '@components/dashboard/MonthlyEarnings';
 import RecentTransactions from '@components/dashboard/RecentTransactions';
 import ProductPerformance from '@components/dashboard/ProductPerformance';
@@ -17,12 +17,12 @@ export default function DashboardView(): React.JSX.Element {
     <Box>
       <Grid container spacing={3}>
         <Grid size={{ xs: 12, lg: 8 }}>
-          <SalesOverview />
+          <RatingStats />
         </Grid>
         <Grid size={{ xs: 12, lg: 4 }}>
           <Grid container spacing={3}>
             <Grid size={12}>
-              <YearlyBreakup />
+              <GenderStats />
             </Grid>
             <Grid size={12}>
               <MonthlyEarnings />

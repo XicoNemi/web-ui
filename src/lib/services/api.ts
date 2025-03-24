@@ -3,7 +3,7 @@ import type { AxiosResponse } from 'axios';
 
 // Types
 // import type { ProfileResponse } from '@/types/api';
-import type { GenderStat } from '@/types/stats';
+import type { GenderStat, AverageRatingStat } from '@/types/stats';
 import type { Business, CreateBusiness } from '@/types/business';
 import { UserRoles, type CreateUser, type User } from '@/types/user';
 
@@ -76,5 +76,5 @@ export const uploadUserImage = async ({ userId, file }: { userId: string; file: 
 export const getGenderStats = (): Promise<GenderStat[]> =>
   axios.get<GenderStat[]>('/stats/user-gender').then((res: AxiosResponse<GenderStat[]>) => res.data);
 
-export const getAverageRatingStats = (): Promise<GenderStat> =>
-  axios.get<GenderStat>('/stats/average-rating').then((res: AxiosResponse<GenderStat>) => res.data);
+export const getAverageRatingStats = (): Promise<AverageRatingStat[]> =>
+  axios.get<AverageRatingStat[]>('/stats/average-rating').then((res: AxiosResponse<AverageRatingStat[]>) => res.data);

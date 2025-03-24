@@ -1,4 +1,4 @@
-import type { Category } from "@types/category";
+import type { Category } from '@types/category';
 
 export interface Business {
   message?: boolean;
@@ -10,7 +10,7 @@ export interface Business {
   category: Category;
   address: string;
   tel: string;
-  web_site: null;
+  web_site: null | string;
   social_networks: null;
   status: boolean;
 }
