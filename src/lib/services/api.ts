@@ -3,8 +3,9 @@ import type { AxiosResponse } from 'axios';
 
 // Types
 // import type { ProfileResponse } from '@/types/api';
-import { UserRoles, type CreateUser, type User } from '@/types/user';
+import type { GenderStat } from '@/types/stats';
 import type { Business, CreateBusiness } from '@/types/business';
+import { UserRoles, type CreateUser, type User } from '@/types/user';
 
 // ### USERS ###
 
@@ -70,3 +71,10 @@ export const uploadUserImage = async ({ userId, file }: { userId: string; file: 
     })
     .then((res: AxiosResponse<void>) => res.data);
 };
+
+// ### Stats ###
+export const getGenderStats = (): Promise<GenderStat[]> =>
+  axios.get<GenderStat[]>('/stats/user-gender').then((res: AxiosResponse<GenderStat[]>) => res.data);
+
+export const getAverageRatingStats = (): Promise<GenderStat> =>
+  axios.get<GenderStat>('/stats/average-rating').then((res: AxiosResponse<GenderStat>) => res.data);
