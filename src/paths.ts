@@ -18,6 +18,13 @@ export const paths = {
     edit: (businessId: string): string => `/businesses/${businessId}/update`,
     delete: (businessId: string): string => `/businesses/${businessId}/delete`,
   },
+  events: {
+    list: '/events',
+    create: '/events/create',
+    details: (eventId: string): string => `/events/${eventId}`,
+    edit: (eventId: string): string => `/events/${eventId}/update`,
+    delete: (eventId: string): string => `/events/${eventId}/delete`,
+  },
   todoList: '/todo-list',
   profile: '/profile',
 };

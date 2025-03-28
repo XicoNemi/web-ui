@@ -73,7 +73,7 @@ const Menuitems = [
     id: uniqueId(),
     title: 'Eventos',
     icon: IconCalendarEvent,
-    href: paths.businesses.list,
+    href: paths.events.list,
     roles: [UserRoles.SuperAdmin],
   },
   {
