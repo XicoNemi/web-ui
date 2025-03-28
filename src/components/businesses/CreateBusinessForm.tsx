@@ -14,7 +14,7 @@ import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 
 // Project Imports
-import type { User } from '@/types/user';
+import { UserRoles, type User } from '@/types/user';
 import type { Category } from '@/types/category';
 import type { CreateBusiness, Business } from '@/types/business';
 
@@ -30,10 +30,13 @@ import SelectInput from '@components/forms/SelectInput';
 import * as yup from 'yup';
 import { useFormik } from 'formik';
 import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query';
+import { useAuth } from '@/hooks/useAuth';
 
 export default function CreateBusinessForm({ businessData }: { businessData?: Business }): React.JSX.Element {
   const router = useRouter();
   const queryClient = useQueryClient();
+  const { user } = useAuth();
+  const isBusinessOwner = user?.type === UserRoles.BusinessOwner;
 
   const isUpdate = Boolean(businessData);
 
@@ -45,6 +48,7 @@ export default function CreateBusinessForm({ businessData }: { businessData?: Bu
   } = useQuery({
     queryKey: ['owners'],
     queryFn: getAllOwners,
+    enabled: Boolean(isBusinessOwner),
   });
 
   const handleOnSuccess = async (successMessage: string): Promise<void> => {
@@ -81,7 +85,7 @@ export default function CreateBusinessForm({ businessData }: { businessData?: Bu
       category: businessData?.category ?? '',
       tel: businessData?.tel ?? '',
       address: businessData?.address ?? '',
-      ownerId: businessData?.ownerId ?? '',
+      ownerId: businessData?.ownerId ?? (isBusinessOwner ? (user?.id ?? '') : ''),
       social_networks: null,
       status: businessData?.status ?? true,
     },
@@ -114,16 +118,24 @@ export default function CreateBusinessForm({ businessData }: { businessData?: Bu
   const hasErrorCategory = Boolean(touched.category && errors.category);
   const hasErrorDescription = Boolean(touched.description && errors.description);
 
-  const ownersItems = React.useMemo(
-    () =>
+  const ownersItems = React.useMemo(() => {
+    const items =
       owners?.map(({ name, lastname, id, status }: User) => ({
         label: `${name} ${lastname}`,
         value: id,
         disabled: !status,
-      })) ?? [],
-    [owners]
-  );
+      })) ?? [];
 
+    if (isBusinessOwner && user?.id && !items.some((item) => item.value === user.id)) {
+      items.push({
+        label: `${user.name} ${user.lastname}`,
+        value: user.id,
+        disabled: false,
+      });
+    }
+
+    return items;
+  }, [owners, isBusinessOwner, user]);
   if (isError || owners?.length === 0 || !owners) {
     <Box
       sx={{
@@ -179,7 +191,7 @@ export default function CreateBusinessForm({ businessData }: { businessData?: Bu
               type="ownerId"
               label="Dueño"
               variant="outlined"
-              disabled={isLoading}
+              disabled={isLoading || isBusinessOwner}
               value={values.ownerId}
               onChange={handleChange}
               labelId="select-ownerId"

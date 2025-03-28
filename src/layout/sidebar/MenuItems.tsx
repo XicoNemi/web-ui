@@ -5,9 +5,11 @@ import {
   IconBuildingStore,
   IconListCheck,
   IconUserCog,
+  IconCalendarEvent,
 } from '@tabler/icons-react';
 
 import { v4 as uniqueId } from 'uuid';
+import { UserRoles } from '@/types/user';
 
 const Menuitems = [
   {
@@ -20,6 +22,14 @@ const Menuitems = [
     title: 'Analíticas',
     icon: IconBrandGoogleAnalytics,
     href: paths.dashboard,
+    roles: [UserRoles.SuperAdmin],
+  },
+  {
+    id: uniqueId(),
+    title: 'Analítias De Mi Negocio',
+    icon: IconBrandGoogleAnalytics,
+    href: paths.dashboard,
+    roles: [UserRoles.BusinessOwner],
   },
 
   {
@@ -31,6 +41,7 @@ const Menuitems = [
     title: 'Perfil',
     icon: IconUserCog,
     href: paths.profile,
+    roles: [UserRoles.BusinessOwner, UserRoles.SuperAdmin],
   },
 
   {
@@ -42,12 +53,28 @@ const Menuitems = [
     title: 'Usuarios',
     icon: IconUsersGroup,
     href: paths.users.list,
+    roles: [UserRoles.SuperAdmin],
   },
   {
     id: uniqueId(),
     title: 'Negocios',
     icon: IconBuildingStore,
     href: paths.businesses.list,
+    roles: [UserRoles.SuperAdmin],
+  },
+  {
+    id: uniqueId(),
+    title: 'Mis Negocios',
+    icon: IconBuildingStore,
+    href: paths.businesses.list,
+    roles: [UserRoles.BusinessOwner],
+  },
+  {
+    id: uniqueId(),
+    title: 'Eventos',
+    icon: IconCalendarEvent,
+    href: paths.businesses.list,
+    roles: [UserRoles.SuperAdmin],
   },
   {
     navlabel: true,
@@ -58,6 +85,7 @@ const Menuitems = [
     title: 'Lista de Tareas',
     icon: IconListCheck,
     href: paths.todoList,
+    roles: [UserRoles.Common, UserRoles.BusinessOwner, UserRoles.SuperAdmin],
   },
 ];
 

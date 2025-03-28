@@ -81,22 +81,17 @@ export default function MonthlyEarnings(): React.JSX.Element {
       }
       footer={<Chart options={optionscolumnchart} series={seriescolumnchart} type="area" height={60} width="100%" />}
     >
-      <>
-        <Typography variant="h3" fontWeight="700" mt="10px">
-          $6,820
+      <Stack direction="row" spacing={1} m={1} alignItems="center">
+        <Avatar sx={{ bgcolor: errorlight, width: 27, height: 27 }}>
+          <IconArrowDownRight width={20} color="#FA896B" />
+        </Avatar>
+        <Typography variant="subtitle2" fontWeight="600">
+          +9%
         </Typography>
-        <Stack direction="row" spacing={1} m={1} alignItems="center">
-          <Avatar sx={{ bgcolor: errorlight, width: 27, height: 27 }}>
-            <IconArrowDownRight width={20} color="#FA896B" />
-          </Avatar>
-          <Typography variant="subtitle2" fontWeight="600">
-            +9%
-          </Typography>
-          <Typography variant="subtitle2" color="textSecondary">
-            last year
-          </Typography>
-        </Stack>
-      </>
+        <Typography variant="subtitle2" color="textSecondary">
+          last year
+        </Typography>
+      </Stack>
     </DashboardCard>
   );
 }
