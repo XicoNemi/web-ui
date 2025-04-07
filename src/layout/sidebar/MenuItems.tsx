@@ -26,7 +26,7 @@ const Menuitems = [
   },
   {
     id: uniqueId(),
-    title: 'Analítias De Mi Negocio',
+    title: 'Analíticas De Mi Negocio',
     icon: IconBrandGoogleAnalytics,
     href: paths.dashboard,
     roles: [UserRoles.BusinessOwner],

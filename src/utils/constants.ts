@@ -1,4 +1,5 @@
 import { Category } from '@/types/category';
+import { EventTypes } from '@/types/event';
 
 export const queryStaleTime: number = 8 * 60 * 60;
 export const queryRetries = 3;
@@ -20,4 +21,14 @@ export const categories: Category[] = [
   Category.Itinerarios,
   Category.Cine,
   Category.Otro,
+];
+
+export const eventTypes: EventTypes[] = [
+  EventTypes.AVENTURA,
+  EventTypes.CULTURAL,
+  EventTypes.FAMILIAR,
+  EventTypes.GASTRONOMICO,
+  EventTypes.GENERAL,
+  EventTypes.OTRO,
+  EventTypes.RELAX,
 ];

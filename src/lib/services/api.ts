@@ -6,6 +6,7 @@ import type { AxiosResponse } from 'axios';
 import type { GenderStat, AverageRatingStat } from '@/types/stats';
 import type { Business, CreateBusiness } from '@/types/business';
 import { UserRoles, type CreateUser, type User } from '@/types/user';
+import type { Event, CreateEvent } from '@/types/event';
 
 // ### USERS ###
 
@@ -78,3 +79,18 @@ export const getGenderStats = (): Promise<GenderStat[]> =>
 
 export const getAverageRatingStats = (): Promise<AverageRatingStat[]> =>
   axios.get<AverageRatingStat[]>('/stats/average-rating').then((res: AxiosResponse<AverageRatingStat[]>) => res.data);
+
+// ### Events ###
+export const getEvents = (): Promise<Event[]> => axios.get('/events').then((res: AxiosResponse<Event[]>) => res.data);
+
+export const getEventById = (businessId: string): Promise<Event> =>
+  axios.get<Event>(`/events/${businessId}`).then((res: AxiosResponse<Event>) => res.data);
+
+export const createEvent = (data: CreateEvent): Promise<Event> =>
+  axios.post<Event>('/events', data).then((res: AxiosResponse<Event>) => res.data);
+
+export const updateEventById = ({ eventId, data }: { eventId: string; data: CreateEvent }): Promise<Event> =>
+  axios.put<Event>(`/events/${String(eventId)}`, data).then((res: AxiosResponse<Event>) => res.data);
+
+export const deleteEventById = (eventId: string): Promise<void> =>
+  axios.delete(`/events/${String(eventId)}`).then((res: AxiosResponse<void>) => res.data);
