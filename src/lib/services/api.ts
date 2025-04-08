@@ -97,3 +97,10 @@ export const updateEventById = ({ eventId, data }: { eventId: string; data: Crea
 
 export const deleteEventById = (eventId: string): Promise<void> =>
   axios.delete(`/events/${String(eventId)}`).then((res: AxiosResponse<void>) => res.data);
+
+// ### BACKUPS ###
+export const telegramBackup = (): Promise<void> =>
+  axios.post('/backup/pg').then((res: AxiosResponse<void>) => res.data);
+
+export const driveBackup = (): Promise<void> =>
+  axios.post('/backup/drive').then((res: AxiosResponse<void>) => res.data);

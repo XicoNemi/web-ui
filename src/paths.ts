@@ -25,6 +25,7 @@ export const paths = {
     edit: (eventId: string): string => `/events/${eventId}/update`,
     delete: (eventId: string): string => `/events/${eventId}/delete`,
   },
+  dataExport: '/data-export',
   todoList: '/todo-list',
   profile: '/profile',
 };

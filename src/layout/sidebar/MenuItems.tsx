@@ -6,6 +6,7 @@ import {
   IconListCheck,
   IconUserCog,
   IconCalendarEvent,
+  IconDatabase,
 } from '@tabler/icons-react';
 
 import { v4 as uniqueId } from 'uuid';
@@ -47,6 +48,13 @@ const Menuitems = [
   {
     navlabel: true,
     subheader: 'Administrar',
+  },
+  {
+    id: uniqueId(),
+    title: 'Respaldos de Datos',
+    icon: IconDatabase,
+    href: paths.dataExport,
+    roles: [UserRoles.SuperAdmin],
   },
   {
     id: uniqueId(),
