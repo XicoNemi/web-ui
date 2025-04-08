@@ -4,6 +4,7 @@ import * as React from 'react';
 import Link from 'next/link';
 
 // MUI Imports
+import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -15,6 +16,8 @@ import MuiLink from '@mui/material/Link';
 import { DataGrid, type GridColDef } from '@mui/x-data-grid';
 
 // Project Imports
+import type { User } from '@/types/user';
+
 import { paths } from '@/paths';
 import { useAuth } from '@/hooks/useAuth';
 import { getAllUsers } from '@/lib/services/api';
@@ -74,6 +77,14 @@ export default function UsersTableView(): React.JSX.Element {
       ),
     },
     {
+      field: 'status',
+      headerName: 'Estado',
+      width: 130,
+      renderCell: ({ value }) => (
+        <Chip color={value ? 'success' : 'error'} label={value ? 'Activo' : 'Inactivo'} size="small" variant="filled" />
+      ),
+    },
+    {
       field: 'tel',
       headerName: 'Teléfono',
       width: 130,
@@ -91,33 +102,43 @@ export default function UsersTableView(): React.JSX.Element {
       sortable: false,
       filterable: false,
       hideable: false,
-      renderCell: ({ value: userId }) => (
-        <>
-          <Stack display="flex" flexDirection="row" alignItems="center" justifyContent="center" height="100%" gap={1}>
-            <IconButton
-              onClick={toggleModal}
-              color="primary"
-              aria-label="Delete"
-              size="small"
-              loading={isLoading}
-              disabled={userId === user?.id}
-            >
-              <IconTrash />
-            </IconButton>
-            <IconButton
-              size="small"
-              color="info"
-              aria-label="Edit"
-              loading={isLoading}
-              LinkComponent={Link}
-              href={paths.users.edit(userId as string)}
-            >
-              <IconEdit />
-            </IconButton>
-          </Stack>
-          <ConfirmDeleteModal userId={userId} open={isOpen} toggleModal={toggleModal} />
-        </>
-      ),
+      renderCell: (params) => {
+        const userData = params.value as User;
+        if (!userData) return null;
+
+        return (
+          <>
+            <Stack display="flex" flexDirection="row" alignItems="center" justifyContent="center" height="100%" gap={1}>
+              <IconButton
+                onClick={toggleModal}
+                color="primary"
+                aria-label="Delete"
+                size="small"
+                loading={isLoading}
+                disabled={userData.id === user?.id || !userData.status}
+              >
+                <IconTrash />
+              </IconButton>
+              <IconButton
+                size="small"
+                color="info"
+                aria-label="Edit"
+                loading={isLoading}
+                LinkComponent={Link}
+                href={paths.users.edit(userData.id)}
+              >
+                <IconEdit />
+              </IconButton>
+            </Stack>
+            <ConfirmDeleteModal
+              userEmail={userData.email}
+              userId={userData.id}
+              open={isOpen}
+              toggleModal={toggleModal}
+            />
+          </>
+        );
+      },
     },
   ];
 
@@ -128,9 +149,10 @@ export default function UsersTableView(): React.JSX.Element {
         image: userRow.url_image?.length > 0 ? userRow.url_image : `${userRow.name} ${userRow.lastname}`,
         name: `${userRow.name} ${userRow.lastname}`,
         type: userRow.type,
+        status: userRow.status,
         email: userRow.email,
         tel: userRow.tel,
-        actions: userRow.id,
+        actions: userRow,
       })) ?? [],
     [users]
   );

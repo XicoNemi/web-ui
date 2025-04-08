@@ -25,6 +25,9 @@ export const updateUserById = ({ userId, data }: { userId: string; data: CreateU
 export const deleteUserById = (userId: string): Promise<void> =>
   axios.delete(`/users/delete/${String(userId)}`).then((res: AxiosResponse<void>) => res.data);
 
+export const deleteUserByEmail = (email: string): Promise<void> =>
+  axios.delete(`/auth/delete-user/${String(email)}`).then((res: AxiosResponse<void>) => res.data);
+
 // ### BUSINESSES ###
 
 export const getBusinesses = (): Promise<Business[]> =>

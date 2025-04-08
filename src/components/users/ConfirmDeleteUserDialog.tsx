@@ -11,7 +11,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 
 // Project Imports
 import { toast } from '@components/core/toaster';
-import { deleteUserById } from '@/lib/services/api';
+import { deleteUserByEmail } from '@/lib/services/api';
 
 import Loader from '@components/shared/Loader';
 import CustomDialog from '@components/shared/CustomDialog';
@@ -23,14 +23,20 @@ interface ConfirmDeleteModalProps {
   open: boolean;
   toggleModal: () => void;
   userId: string;
+  userEmail: string;
 }
 
-export default function ConfirmDeleteModal({ open, userId, toggleModal }: ConfirmDeleteModalProps): React.JSX.Element {
+export default function ConfirmDeleteModal({
+  open,
+  userEmail,
+  userId,
+  toggleModal,
+}: ConfirmDeleteModalProps): React.JSX.Element {
   const queryClient = useQueryClient();
 
   const { mutate: deleteUser, isPending } = useMutation({
     mutationKey: ['deleteUser'],
-    mutationFn: () => deleteUserById(userId),
+    mutationFn: () => deleteUserByEmail(userEmail),
     onSuccess: async () => {
       toast.success('Usuario eliminado correctamente');
       await queryClient.invalidateQueries({ queryKey: ['users'] });
